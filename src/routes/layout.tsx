@@ -2,7 +2,7 @@ import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { Header } from "../components/header/header";
 import { Footer } from "../components/footer/footer";
-import { WhatsAppButton } from "../components/whatsapp-button/whatsapp-button";
+import { WhatsAppButton } from "../components/whatsapp-button";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
@@ -19,7 +19,7 @@ export default component$(() => {
         <Slot />
       </main>
       <Footer />
-      <WhatsAppButton />
+      <WhatsAppButton phone="5491144048614" message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
     </div>
   );
 });

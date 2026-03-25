@@ -20,13 +20,10 @@ export default component$(() => {
               Más de 20 Años Vistiendo al País
             </h2>
             <p class="text-lg text-muted-foreground">
-              Fundada a principios de la década de 2000, Textil CCE nació en el corazón comercial de Buenos Aires, el barrio de Once, con la misión de abastecer a la creciente industria de la confección argentina.
-            </p>
-            <p class="text-lg text-muted-foreground">
-              Desde nuestros inicios, nos hemos enfocado en ofrecer una inmejorable relación calidad-precio. Entendemos las dinámicas del mercado textil y la importancia de contar con stock confiable en los momentos críticos de cada temporada.
+              Con más de dos décadas de trayectoria en el mercado textil, Textil CCE se consolidó como un proveedor confiable para marcas de indumentaria de todo el país.
             </p>
             <p class="text-lg text-muted-foreground mb-8">
-              Hoy, somos proveedores estratégicos para marcas de primera línea, cientos de talleres, diseñadores independientes y emprendedores a lo largo y ancho de todo el territorio nacional.
+              Estamos ubicados en Once, uno de los centros comerciales textiles más importantes de Buenos Aires, desde donde abastecemos a emprendedores, talleres y fábricas de indumentaria.
             </p>
             <div class="grid grid-cols-2 gap-6 pt-6 border-t border-border">
               <div>
@@ -59,7 +56,7 @@ export default component$(() => {
         <div class="rounded-xl bg-muted p-8 text-center sm:p-12">
           <h3 class="font-heading text-2xl font-bold text-foreground">Nuestro Compromiso</h3>
           <p class="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            En Textil CCE no solo vendemos telas, construimos relaciones a largo plazo con nuestros clientes. Tu éxito en la confección es también nuestro éxito. Por eso te brindamos atención humana, rápida y con profundo conocimiento técnico de cada material que comercializamos.
+            Nuestro compromiso es ofrecer telas de calidad, variedad de colores y disponibilidad permanente para acompañar el crecimiento de nuestros clientes.
           </p>
         </div>
         

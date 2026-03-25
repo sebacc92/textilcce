@@ -12,7 +12,7 @@ export default component$(() => {
             Contacto
           </h1>
           <p class="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            ¿Tenés alguna duda o necesitás una cotización mayorista? Escribinos y te responderemos a la brevedad.
+            Si estás buscando un mayorista de telas en Once, podés visitarnos en nuestro local o contactarnos para recibir información sobre telas disponibles, colores y stock.
           </p>
         </header>
 
@@ -34,6 +34,22 @@ export default component$(() => {
                 </div>
                 <h3 class="font-heading font-bold text-foreground">Horarios</h3>
                 <p class="mt-2 text-sm text-muted-foreground">Lunes a Viernes:<br/>9:00 a 18:00 hs<br/><br/>Sábados:<br/>9:00 a 14:00 hs</p>
+              </div>
+
+              <div class="rounded-lg border border-border bg-card p-6 shadow-sm">
+                <div class="mb-4 inline-flex rounded-full bg-primary/10 p-3 text-primary">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                </div>
+                <h3 class="font-heading font-bold text-foreground">Modalidad de venta</h3>
+                <p class="mt-2 text-sm text-muted-foreground">Ventas por mayor</p>
+              </div>
+
+              <div class="rounded-lg border border-border bg-card p-6 shadow-sm">
+                <div class="mb-4 inline-flex rounded-full bg-primary/10 p-3 text-primary">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                </div>
+                <h3 class="font-heading font-bold text-foreground">Envíos</h3>
+                <p class="mt-2 text-sm text-muted-foreground">Realizamos envíos a todo el país.</p>
               </div>
             </div>
 
