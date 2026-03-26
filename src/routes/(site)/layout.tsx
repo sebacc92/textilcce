@@ -1,8 +1,8 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { Header } from "../components/header/header";
-import { Footer } from "../components/footer/footer";
-import { WhatsAppButton } from "../components/whatsapp-button";
+import { Header } from "../../components/header/header";
+import { Footer } from "../../components/footer/footer";
+import { WhatsAppButton } from "../../components/whatsapp-button";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
