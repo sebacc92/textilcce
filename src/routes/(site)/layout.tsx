@@ -1,8 +1,11 @@
 import { component$, Slot } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { routeLoader$, type RequestHandler } from "@builder.io/qwik-city";
 import { Header } from "../../components/header/header";
 import { Footer } from "../../components/footer/footer";
 import { WhatsAppButton } from "../../components/whatsapp-button";
+import { getDb } from "../../db/client";
+import { siteSettings } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
@@ -11,7 +14,34 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
+export const useSiteSettingsLoader = routeLoader$(async ({ env }) => {
+  const db = getDb(env);
+  const [settings] = await db
+    .select()
+    .from(siteSettings)
+    .where(eq(siteSettings.id, '1'))
+    .limit(1);
+
+  return settings ?? {
+    id: '1',
+    heroTitle: 'Telas por Mayor en Once',
+    heroSubtitle: null,
+    heroImageUrl: null,
+    whatsappNumber: '+5491144048614',
+    instagramUrl: 'https://www.instagram.com/textil_cce/',
+    facebookUrl: 'https://www.facebook.com/TextilCCE',
+    tiktokUrl: 'https://www.tiktok.com/@textil_cce',
+    address: 'Azcuénaga 650 – Once, Buenos Aires',
+    businessHours: 'Lunes a Viernes: 9 a 18 hs | Sábados: 9 a 14 hs',
+    contactEmail: null,
+    updatedAt: null,
+  };
+});
+
 export default component$(() => {
+  const settings = useSiteSettingsLoader();
+  const whatsapp = settings.value.whatsappNumber?.replace(/[^0-9]/g, '') || '5491144048614';
+
   return (
     <div class="flex min-h-screen flex-col font-sans">
       <Header />
@@ -19,7 +49,7 @@ export default component$(() => {
         <Slot />
       </main>
       <Footer />
-      <WhatsAppButton phone="5491144048614" message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
+      <WhatsAppButton phone={whatsapp} message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
     </div>
   );
 });

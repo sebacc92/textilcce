@@ -20,7 +20,9 @@ export default component$(() => {
           <Link href="/admin/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Dashboard</Link>
           <Link href="/admin/categorias/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Categorías</Link>
           <Link href="/admin/productos/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Productos</Link>
-          <a href="/" target="_blank" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-slate-400 mt-8 text-base">Ver Sitio Público ↗</a>
+          <div class="border-t border-slate-700 my-4"></div>
+          <Link href="/admin/ajustes/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Ajustes</Link>
+          <a href="/" target="_blank" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-slate-400 mt-4 text-base">Ver Sitio Público ↗</a>
         </nav>
       </aside>
 

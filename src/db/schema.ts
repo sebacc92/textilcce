@@ -39,3 +39,18 @@ export const productsRelations = relations(products, ({ one }) => ({
     references: [categories.id],
   }),
 }));
+
+export const siteSettings = sqliteTable('site_settings', {
+  id: text('id').primaryKey(),
+  heroTitle: text('hero_title').notNull().default('Telas por Mayor en Once'),
+  heroSubtitle: text('hero_subtitle'),
+  heroImageUrl: text('hero_image_url'),
+  whatsappNumber: text('whatsapp_number'),
+  instagramUrl: text('instagram_url'),
+  facebookUrl: text('facebook_url'),
+  tiktokUrl: text('tiktok_url'),
+  address: text('address'),
+  businessHours: text('business_hours'),
+  contactEmail: text('contact_email'),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }),
+});
