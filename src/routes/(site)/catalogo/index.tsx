@@ -39,8 +39,26 @@ export default component$(() => {
           </div>
         </header>
 
+        {/* Quick Nav (anchor links to categories) */}
+        {catalog.value.length > 1 && (
+          <nav class="mt-16 rounded-2xl bg-gray-50 border border-gray-200 p-6">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">Navegación rápida</h3>
+            <div class="flex flex-wrap gap-2.5">
+              {catalog.value.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`#${cat.slug}`}
+                  class="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-[#1e2c53] transition-all hover:bg-[#1e2c53] hover:text-white hover:border-[#1e2c53]"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
+
         {/* Categorías con productos */}
-        <div class="space-y-16">
+        <div class="space-y-16 mt-16">
           {catalog.value.map((cat) => (
             <section key={cat.id} id={cat.slug}>
               {/* Category Header */}
@@ -118,23 +136,7 @@ export default component$(() => {
           ))}
         </div>
 
-        {/* Quick Nav (anchor links to categories) */}
-        {catalog.value.length > 1 && (
-          <nav class="mt-16 rounded-2xl bg-gray-50 border border-gray-200 p-6">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">Navegación rápida</h3>
-            <div class="flex flex-wrap gap-2.5">
-              {catalog.value.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`#${cat.slug}`}
-                  class="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-[#1e2c53] transition-all hover:bg-[#1e2c53] hover:text-white hover:border-[#1e2c53]"
-                >
-                  {cat.name}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        )}
+
 
         {/* CTA */}
         <div class="mt-16 rounded-3xl bg-[#f9fafb] py-16 px-6 shadow-sm border border-gray-100">

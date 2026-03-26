@@ -63,7 +63,7 @@ export default component$(() => {
                     </span>
                   </td>
                   <td class="px-6 py-4 text-right">
-                    <button class="text-slate-400 hover:text-primary transition font-medium text-xs">Editar</button>
+                    <Link href={`/admin/productos/${p.id}/edit/`} class="text-slate-400 hover:text-primary transition font-medium text-xs">Editar</Link>
                   </td>
                 </tr>
               ))

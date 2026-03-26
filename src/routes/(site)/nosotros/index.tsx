@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import LocalImg from "~/media/local.webp?jsx"
 
 export default component$(() => {
   return (
@@ -38,14 +39,7 @@ export default component$(() => {
           </div>
           <div class="relative overflow-hidden rounded-xl border border-gray-200 shadow-lg">
             <div class="aspect-4/3 bg-[#f3f4f6] w-full">
-               <img
-                  src="https://placehold.co/800x600/webp?text=Local+Once"
-                  alt="Local de Textil CCE en Once"
-                  width="800"
-                  height="600"
-                  class="h-full w-full object-cover"
-                  loading="lazy"
-                />
+               <LocalImg class="h-full w-full object-cover" />
             </div>
             <div class="absolute bottom-4 left-4 right-4 rounded-lg bg-white/95 p-4 backdrop-blur-sm shadow-sm">
               <p class="font-medium text-[#1e2c53]">📍 Nuestro amplio local en Azcuénaga 650</p>

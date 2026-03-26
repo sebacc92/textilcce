@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
+import Logo from "~/media/logos/vertical-pantoneP103-16.png?jsx"
 
 export const Footer = component$(() => {
   return (
@@ -7,13 +8,7 @@ export const Footer = component$(() => {
       <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* Logo & Tagline */}
         <div class="space-y-6">
-          <img
-            src="/logos/vertical-blanco.png"
-            alt="Textil CCE"
-            width={160}
-            height={120}
-            class="h-24 w-auto"
-          />
+          <Logo />
           <p class="text-sm text-white/70 leading-relaxed">
             Más de 20 años siendo líderes mayoristas de telas para indumentaria en Once, Buenos Aires.
           </p>
@@ -40,7 +35,7 @@ export const Footer = component$(() => {
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#6272b3] mt-0.5">🕒</span>
-              <span>Lunes a Viernes: 9 a 18 hs<br/>Sábados: 9 a 14 hs</span>
+              <span>Lunes a Viernes: 9 a 18 hs<br />Sábados: 9 a 14 hs</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#6272b3] mt-0.5">📱</span>
@@ -54,13 +49,13 @@ export const Footer = component$(() => {
           <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-sm tracking-wider">Redes Sociales</h4>
           <div class="flex gap-4">
             <a href="https://www.instagram.com/textil_cce/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:bg-[#6272b3] hover:text-white transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
             </a>
             <a href="https://www.facebook.com/TextilCCE" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:bg-[#6272b3] hover:text-white transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
             </a>
             <a href="https://www.tiktok.com/@textil_cce" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:bg-[#6272b3] hover:text-white transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg>
             </a>
           </div>
         </div>

@@ -2,6 +2,11 @@ import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link } from "@builder.io/qwik-city";
 import { useSiteSettingsLoader } from "./layout";
+import LocalImg from "~/media/local.webp?jsx"
+import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
+import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
+import Horiz3 from "~/media/horizontales/3.jpeg?jsx"
+import SquareImg from "~/media/square/1.jpeg?jsx"
 
 export default component$(() => {
   const settings = useSiteSettingsLoader();
@@ -9,29 +14,21 @@ export default component$(() => {
   return (
     <>
       {/* Hero Section */}
-      <section class="relative flex h-[85vh] w-full flex-col items-center justify-center overflow-hidden bg-[#1e2c53]">
-        <div 
+      <section class="relative flex h-[85vh] w-full flex-col items-start justify-center overflow-hidden bg-[#1e2c53]">
+        <div
           class="absolute inset-0 z-0 opacity-30 bg-cover bg-center"
-          style={{ backgroundImage: `url('${settings.value.heroImageUrl || 'https://placehold.co/1920x1080/webp'}')` }}
+          style={{ backgroundImage: settings.value?.heroImageUrl ? `url('${settings.value.heroImageUrl}')` : 'none' }}
         ></div>
-        <div class="absolute inset-0 z-0 bg-linear-to-b from-[#1e2c53]/80 via-[#1e2c53]/60 to-[#1e2c53]/90"></div>
+        <div class="absolute inset-0 z-0 bg-linear-to-r from-[#1e2c53]/95 via-[#1e2c53]/70 to-transparent"></div>
 
-        <div class="container relative z-10 mx-auto px-6 text-center md:px-12">
+        <div class="container relative z-10 mx-auto px-6 text-left md:px-12 md:w-2/3 ml-0">
           <h1 class="mb-6 font-heading text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            {settings.value.heroTitle ? settings.value.heroTitle.split('\\n').map((line: string, i: number) => (
-              <span key={i}>
-                {line}
-                {i === 0 && <br class="hidden sm:inline" />}
-              </span>
-            )) : (
-              <>Telas por Mayor en Once <br class="hidden sm:inline" /></>
-            )}
-            <span class="text-[#6272b3] block mt-2">{settings.value.heroSubtitle || 'Calidad para tu Confección'}</span>
+            {settings.value?.heroTitle}
           </h1>
-          <p class="mx-auto mb-10 max-w-2xl text-lg text-white/80 sm:text-xl">
-            Líderes mayoristas de telas para indumentaria con más de 20 años de trayectoria. Stock permanente y envíos a todo el país.
+          <p class="mb-10 max-w-2xl text-lg text-white/80 sm:text-xl">
+            {settings.value?.heroSubtitle}
           </p>
-          <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div class="flex flex-col items-start justify-start gap-4 sm:flex-row">
             <Link
               href="/catalogo/"
               class="inline-flex h-14 items-center justify-center rounded-lg bg-white px-8 font-semibold text-[#1e2c53] transition-all hover:bg-[#6272b3] hover:text-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:ring-offset-2 focus:ring-offset-[#1e2c53]"
@@ -63,21 +60,18 @@ export default component$(() => {
             </p>
           </div>
           <div>
-             <img
-                src="https://placehold.co/800x450/webp?text=Local+o+Stock"
-                alt="Stock de telas Textil CCE"
-                width="800"
-                height="450"
-                class="aspect-video w-full object-cover rounded-xl shadow-lg"
-                loading="lazy"
-             />
+            <LocalImg />
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section class="bg-[#f9fafb] py-20">
-        <div class="container mx-auto px-6 md:px-12">
+      <section class="relative bg-[#f9fafb] py-20">
+        <div class="absolute inset-0 z-0">
+          <SquareImg class="h-full w-full object-cover" />
+          <div class="absolute inset-0 bg-slate-100/90 backdrop-blur-[2px]"></div>
+        </div>
+        <div class="relative z-10 container mx-auto px-6 md:px-12">
           <div class="mb-12 text-center">
             <h2 class="font-heading text-3xl font-bold tracking-tight text-[#1e2c53] sm:text-4xl">¿Por qué elegir Textil CCE?</h2>
             <p class="mt-4 text-gray-500">Somos tu proveedor de telas para ropa confiable en Buenos Aires.</p>
@@ -143,18 +137,13 @@ export default component$(() => {
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {[
-              { title: "Telas de Moda", img: "https://placehold.co/600x400/webp", href: "/catalogo/" },
-              { title: "Confección y Sastrería", img: "https://placehold.co/600x400/webp", href: "/catalogo/" },
-              { title: "Moda Urbana", img: "https://placehold.co/600x400/webp", href: "/catalogo/" },
+              { title: "Telas de Moda", ImgComp: Horiz1, href: "/catalogo/" },
+              { title: "Confección y Sastrería", ImgComp: Horiz2, href: "/catalogo/" },
+              { title: "Moda Urbana", ImgComp: Horiz3, href: "/catalogo/" },
             ].map((cat, index) => (
               <Link key={index} href={cat.href} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
-                <img
-                  src={cat.img}
-                  alt={cat.title}
-                  width="600"
-                  height="400"
+                <cat.ImgComp
                   class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
                 />
                 <div class="absolute inset-0 bg-linear-to-t from-[#1e2c53]/90 via-[#1e2c53]/30 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
@@ -170,7 +159,9 @@ export default component$(() => {
       <section class="py-20 px-6 md:px-12">
         <div class="container mx-auto">
           <div class="relative overflow-hidden rounded-2xl bg-[#1e2c53] px-6 py-16 text-center text-white shadow-2xl sm:px-16 sm:py-20">
-            <div class="absolute inset-0 opacity-10 bg-[url('https://placehold.co/1920x1080/webp')] bg-cover bg-center"></div>
+            <div class="absolute inset-0 opacity-10">
+              <Horiz1 class="h-full w-full object-cover" />
+            </div>
             <div class="relative z-10 mx-auto max-w-2xl">
               <h2 class="font-heading text-3xl font-bold tracking-tight sm:text-4xl">¿Buscás telas por mayor para tu próxima colección?</h2>
               <p class="mx-auto mt-4 max-w-xl text-lg text-white/70">
