@@ -1,11 +1,69 @@
+/* ── Gotham Rounded @font-face ── */
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_lightitalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_bookitalic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_mediumitalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/gothamrnd_bolditalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base, qwik-ui, popover-polyfill, theme, components, utilities;
 @import "tailwindcss";
 @import "tw-animate-css";
 @source "../src";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Gotham Rounded", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Gotham Rounded", "Montserrat", ui-sans-serif, system-ui, sans-serif;
 }
 
 @custom-variant dark (&:is(.dark *));

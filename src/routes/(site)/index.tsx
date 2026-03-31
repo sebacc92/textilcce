@@ -21,11 +21,11 @@ export default component$(() => {
         ></div>
         <div class="absolute inset-0 z-0 bg-linear-to-r from-[#1e2c53]/95 via-[#1e2c53]/70 to-transparent"></div>
 
-        <div class="container relative z-10 mx-auto px-6 text-left md:px-12 md:w-2/3 ml-0">
+        <div class="container relative z-10 mx-auto px-6 text-left md:px-12 md:max-w-3xl md:mr-auto md:ml-12 lg:ml-24">
           <h1 class="mb-6 font-heading text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
             {settings.value?.heroTitle}
           </h1>
-          <p class="mb-10 max-w-2xl text-lg text-white/80 sm:text-xl">
+          <p class="mb-10 ml-1 max-w-2xl text-lg text-white/80 sm:text-xl">
             {settings.value?.heroSubtitle}
           </p>
           <div class="flex flex-col items-start justify-start gap-4 sm:flex-row">
