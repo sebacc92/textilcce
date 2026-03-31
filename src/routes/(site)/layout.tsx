@@ -32,7 +32,7 @@ export const useSiteSettingsLoader = routeLoader$(async ({ env }) => {
     facebookUrl: 'https://www.facebook.com/TextilCCE',
     tiktokUrl: 'https://www.tiktok.com/@textil_cce',
     address: 'Azcuénaga 650 – Once, Buenos Aires',
-    businessHours: 'Lunes a Viernes: 9 a 18 hs | Sábados: 9 a 14 hs',
+    businessHours: 'Lunes a Viernes: 9 a 17 hs',
     contactEmail: null,
     updatedAt: null,
   };

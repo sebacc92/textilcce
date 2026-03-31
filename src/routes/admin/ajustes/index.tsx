@@ -249,7 +249,7 @@ export default component$(() => {
               id="businessHours"
               name="businessHours"
               value={s.businessHours || ''}
-              placeholder="Lunes a Viernes: 9 a 18 hs | Sábados: 9 a 14 hs"
+              placeholder="Lunes a Viernes: 9 a 17 hs"
               class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
             />
           </div>

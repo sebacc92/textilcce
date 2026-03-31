@@ -35,7 +35,7 @@ export const Footer = component$(() => {
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#6272b3] mt-0.5">🕒</span>
-              <span>Lunes a Viernes: 9 a 18 hs<br />Sábados: 9 a 14 hs</span>
+              <span>Lunes a Viernes: 9 a 17 hs</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#6272b3] mt-0.5">📱</span>

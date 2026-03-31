@@ -27,7 +27,7 @@ async function seed() {
         'Más de 20 años ofreciendo telas de calidad, variedad de colores y precios competitivos en Once.',
       whatsappNumber: '+5491144048614',
       address: 'Azcuénaga 650 – Once, Buenos Aires',
-      businessHours: 'Lunes a Viernes: 9 a 18 hs | Sábados: 9 a 14 hs',
+      businessHours: 'Lunes a Viernes: 9 a 17 hs',
       instagramUrl: 'https://www.instagram.com/textil_cce/',
       facebookUrl: 'https://www.facebook.com/TextilCCE',
       tiktokUrl: 'https://www.tiktok.com/@textil_cce',
