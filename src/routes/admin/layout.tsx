@@ -18,11 +18,13 @@ export default component$(() => {
         </div>
         <nav class="flex-1 px-4 space-y-2">
           <Link href="/admin/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Dashboard</Link>
+          <Link href="/admin/contenido/" class="block px-4 py-2 rounded-md bg-[#6272b3]/20 text-[#6272b3] font-semibold transition text-lg">Contenido</Link>
           <Link href="/admin/categorias/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Categorías</Link>
           <Link href="/admin/productos/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Productos</Link>
           <div class="border-t border-slate-700 my-4"></div>
           <Link href="/admin/ajustes/" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-lg">Ajustes</Link>
           <a href="/" target="_blank" class="block px-4 py-2 rounded-md hover:bg-slate-800 transition text-slate-400 mt-4 text-base">Ver Sitio Público ↗</a>
+
         </nav>
       </aside>
 

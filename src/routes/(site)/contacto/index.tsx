@@ -3,9 +3,7 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
-    <div class="py-12 md:py-20 relative">
-      <div class="absolute inset-x-0 top-0 h-96 bg-[#1e2c53]/[0.03] z-0"></div>
-
+    <div class="py-12 md:py-20 relative bg-gray-50">
       <div class="container mx-auto px-6 md:px-12 relative z-10">
         <header class="mb-12 text-center">
           <h1 class="font-heading text-4xl font-bold tracking-tight text-[#1e2c53] sm:text-5xl">
@@ -121,15 +119,13 @@ export default component$(() => {
         {/* Google Maps Full Width */}
         <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm w-full">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.820625997235!2d-58.40384772346761!3d-34.6086987577546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccb072c1c9b3b%3A0xcbbb032ea8e0f6c2!2sAzcu%C3%A9naga%20650%2C%20C1029AAN%20C%C3%A1hu%2C%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1700000000000!5m2!1ses-419!2sar"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.820625997235!2d-58.4012195!3d-34.6016925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca9342c3959d%3A0x384115e5d229ecc7!2sTEXTIL%20CCE!5e0!3m2!1ses-419!2sar!4v1700000000000!5m2!1ses-419!2sar"
             width="100%"
-            height="500"
-            style="border:0;"
+            class="min-h-[500px] md:min-h-[600px] w-full border-0"
             allowFullscreen={false}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="Mapa de ubicación Textil CCE"
-            class="block"
           ></iframe>
         </div>
       </div>

@@ -40,6 +40,15 @@ export const productsRelations = relations(products, ({ one }) => ({
   }),
 }));
 
+export const siteContentLists = sqliteTable('site_content_lists', {
+  id: text('id').primaryKey(),
+  type: text('type').notNull(), // 'home_feature', 'b2b_benefit', 'b2b_client'
+  title: text('title').notNull(),
+  description: text('description'),
+  icon: text('icon'), // Lucide icon name
+  displayOrder: integer('display_order').default(0),
+});
+
 export const siteSettings = sqliteTable('site_settings', {
   id: text('id').primaryKey(),
   heroTitle: text('hero_title').notNull().default('Telas por Mayor en Once'),
@@ -52,5 +61,12 @@ export const siteSettings = sqliteTable('site_settings', {
   address: text('address'),
   businessHours: text('business_hours'),
   contactEmail: text('contact_email'),
+  aboutP1: text('about_p1'),
+  aboutP2: text('about_p2'),
+  commitmentText: text('commitment_text'),
+  statsYears: text('stats_years'),
+  statsCoverage: text('stats_coverage'),
+  mapEmbedUrl: text('map_embed_url'),
+  chatbotEnabled: integer('chatbot_enabled', { mode: 'boolean' }).default(true),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });

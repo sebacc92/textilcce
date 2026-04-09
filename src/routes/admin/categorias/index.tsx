@@ -2,6 +2,7 @@ import { component$, useSignal } from '@builder.io/qwik';
 import { routeAction$, routeLoader$, Form, type DocumentHead } from '@builder.io/qwik-city';
 import { getDb } from '../../../db/client';
 import { categories } from '../../../db/schema';
+import { eq } from 'drizzle-orm';
 
 export const useCategoriesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
@@ -42,10 +43,63 @@ export const useAddCategoryAction = routeAction$(async (_, { request, env, fail 
   }
 });
 
+export const useEditCategoryAction = routeAction$(async (_, { request, env, fail }) => {
+  const formData = await request.formData();
+  const id = formData.get('id') as string;
+  const name = (formData.get('name') as string)?.trim();
+  const slug = (formData.get('slug') as string)?.trim();
+  const description = (formData.get('description') as string)?.trim();
+  const displayOrder = parseInt(formData.get('displayOrder') as string, 10);
+
+  if (!id || !name || !slug) {
+    return fail(400, { message: 'ID, Nombre y Slug son obligatorios.' });
+  }
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    return fail(400, { message: 'El slug solo puede contener letras minúsculas, números y guiones.' });
+  }
+
+  try {
+    const db = getDb(env);
+    await db.update(categories).set({
+      name,
+      slug,
+      description: description || null,
+      display_order: isNaN(displayOrder) ? 0 : displayOrder,
+    }).where(eq(categories.id, id));
+    return { success: true };
+  } catch (e: any) {
+    if (e.message?.includes('UNIQUE')) {
+      return fail(409, { message: `Ya existe una categoría con el slug "${slug}".` });
+    }
+    console.error('Error updating category:', e);
+    return fail(500, { message: 'Error interno al actualizar la categoría.' });
+  }
+});
+
+export const useDeleteCategoryAction = routeAction$(async (_, { request, env, fail }) => {
+  const formData = await request.formData();
+  const id = formData.get('id') as string;
+  
+  if (!id) return fail(400, { message: 'ID no proporcionado.' });
+  
+  try {
+    const db = getDb(env);
+    await db.delete(categories).where(eq(categories.id, id));
+    return { success: true };
+  } catch (e: any) {
+    console.error('Error deleting category:', e);
+    return fail(500, { message: 'Error al eliminar la categoría. Asegúrate de que no tenga productos asociados.' });
+  }
+});
+
 export default component$(() => {
   const cats = useCategoriesLoader();
   const addAction = useAddCategoryAction();
+  const editAction = useEditCategoryAction();
+  const deleteAction = useDeleteCategoryAction();
   const showModal = useSignal(false);
+  const editingCategory = useSignal<any>(null);
 
   return (
     <div class="space-y-6">
@@ -53,7 +107,10 @@ export default component$(() => {
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-slate-800">Categorías</h1>
         <button
-          onClick$={() => (showModal.value = true)}
+          onClick$={() => {
+            editingCategory.value = null;
+            showModal.value = true;
+          }}
           class="bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition shadow-sm flex items-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -67,6 +124,21 @@ export default component$(() => {
       {addAction.value?.success && (
         <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg text-sm font-medium">
           ✅ Categoría creada exitosamente.
+        </div>
+      )}
+      {editAction.value?.success && (
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg text-sm font-medium">
+          ✅ Categoría actualizada exitosamente.
+        </div>
+      )}
+      {deleteAction.value?.success && (
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg text-sm font-medium">
+          ✅ Categoría eliminada exitosamente.
+        </div>
+      )}
+      {deleteAction.value?.failed && (
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm font-medium">
+          {deleteAction.value.message}
         </div>
       )}
 
@@ -88,6 +160,7 @@ export default component$(() => {
                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nombre</th>
                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Slug</th>
                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Descripción</th>
+                <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -103,6 +176,31 @@ export default component$(() => {
                     <code class="text-sm bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{cat.slug}</code>
                   </td>
                   <td class="px-6 py-4 text-sm text-slate-500 max-w-xs truncate">{cat.description || '—'}</td>
+                  <td class="px-6 py-4 flex justify-end gap-2">
+                    <button
+                      onClick$={() => {
+                        editingCategory.value = cat;
+                        showModal.value = true;
+                      }}
+                      class="text-[#6272b3] hover:text-[#1e2c53] font-medium text-sm transition"
+                    >
+                      Editar
+                    </button>
+                    <Form action={deleteAction}>
+                      <input type="hidden" name="id" value={cat.id} />
+                      <button
+                         type="submit"
+                         class="text-red-500 hover:text-red-700 font-medium text-sm transition"
+                         onClick$={(e) => {
+                           if (!confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+                             e.preventDefault();
+                           }
+                         }}
+                      >
+                         Eliminar
+                      </button>
+                    </Form>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -122,9 +220,9 @@ export default component$(() => {
           {/* Modal Content */}
           <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-8">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-slate-800">Nueva Categoría</h2>
+              <h2 class="text-xl font-bold text-slate-800">{editingCategory.value ? 'Editar Categoría' : 'Nueva Categoría'}</h2>
               <button
-                onClick$={() => (showModal.value = false)}
+                onClick$={() => { showModal.value = false; editingCategory.value = null; }}
                 class="text-slate-400 hover:text-slate-600 transition"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,21 +232,26 @@ export default component$(() => {
             </div>
 
             <Form
-              action={addAction}
+              action={editingCategory.value ? editAction : addAction}
               class="space-y-5"
               onSubmitCompleted$={() => {
-                if (addAction.value?.success) {
+                if (addAction.value?.success || editAction.value?.success) {
                   showModal.value = false;
+                  editingCategory.value = null;
                 }
               }}
               spaReset
             >
+              {editingCategory.value && (
+                <input type="hidden" name="id" value={editingCategory.value.id} />
+              )}
               <div>
                 <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
+                  value={editingCategory.value?.name || ''}
                   required
                   placeholder="Ej: Telas de Moda"
                   class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
@@ -161,6 +264,7 @@ export default component$(() => {
                   type="text"
                   id="slug"
                   name="slug"
+                  value={editingCategory.value?.slug || ''}
                   required
                   placeholder="Ej: telas-de-moda"
                   class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition font-mono"
@@ -173,6 +277,7 @@ export default component$(() => {
                 <textarea
                   id="description"
                   name="description"
+                  value={editingCategory.value?.description || ''}
                   rows={3}
                   placeholder="Breve descripción de la categoría..."
                   class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
@@ -185,22 +290,23 @@ export default component$(() => {
                   type="number"
                   id="displayOrder"
                   name="displayOrder"
+                  value={editingCategory.value?.display_order ?? ''}
                   min={0}
                   placeholder="0"
                   class="block w-24 rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
                 />
               </div>
 
-              {addAction.value?.failed && (
+              {(addAction.value?.failed || editAction.value?.failed) && (
                 <div class="text-sm font-medium text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
-                  {addAction.value.message}
+                  {addAction.value?.message || editAction.value?.message}
                 </div>
               )}
 
               <div class="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick$={() => (showModal.value = false)}
+                  onClick$={() => { showModal.value = false; editingCategory.value = null; }}
                   class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-800 transition"
                 >
                   Cancelar
@@ -209,7 +315,7 @@ export default component$(() => {
                   type="submit"
                   class="bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm"
                 >
-                  Crear Categoría
+                  {editingCategory.value ? 'Actualizar' : 'Crear Categoría'}
                 </button>
               </div>
             </Form>

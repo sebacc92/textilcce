@@ -18,6 +18,7 @@ const DEFAULT_SETTINGS = {
   address: '',
   businessHours: '',
   contactEmail: '',
+  chatbotEnabled: true,
   updatedAt: null,
 };
 
@@ -54,6 +55,7 @@ export const useUpdateSettingsAction = routeAction$(
         address: data.address || null,
         businessHours: data.businessHours || null,
         contactEmail: data.contactEmail || null,
+        chatbotEnabled: data.chatbotEnabled === 'on', // Checkboxes send "on" if checked, missing if not
         updatedAt: new Date(),
       };
 
@@ -80,6 +82,7 @@ export const useUpdateSettingsAction = routeAction$(
     address: z.string().optional(),
     businessHours: z.string().optional(),
     contactEmail: z.string().optional(),
+    chatbotEnabled: z.string().optional(),
   }),
 );
 
@@ -298,6 +301,25 @@ export default component$(() => {
                 class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Chatbot Section */}
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
+          <div class="border-b border-slate-100 pb-3">
+            <h2 class="text-lg font-semibold text-slate-800">🤖 AI Chatbot</h2>
+            <p class="text-sm text-slate-500 mt-1">Habilita o deshabilita el asistente virtual de ventas impulsado por IA.</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="chatbotEnabled"
+              name="chatbotEnabled"
+              checked={s.chatbotEnabled ?? true}
+              class="w-5 h-5 rounded text-slate-900 border-slate-300 focus:ring-slate-500 transition"
+            />
+            <label for="chatbotEnabled" class="text-sm font-medium text-slate-700">Activar Chatbot en la página pública</label>
           </div>
         </div>
 

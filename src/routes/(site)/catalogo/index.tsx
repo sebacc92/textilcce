@@ -34,8 +34,8 @@ export default component$(() => {
             Catálogo de Telas
           </h1>
           <div class="mx-auto mt-6 max-w-3xl text-center text-gray-600 leading-relaxed">
-            <p>En Textil CCE ofrecemos un amplio catálogo de telas para indumentaria, pensadas para cubrir las necesidades de marcas de ropa, talleres y emprendedores del rubro textil.</p>
-            <p class="mt-4">Nuestro objetivo es brindar variedad, calidad y disponibilidad para que cada cliente pueda desarrollar sus colecciones con materiales confiables.</p>
+            <p>En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.</p>
+            <p class="mt-4">Nuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.</p>
           </div>
         </header>
 
@@ -161,11 +161,11 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "Telas para Indumentaria por Mayor | Mayorista de Telas en Once | Catálogo de Telas para Indumentaria",
+  title: "Catálogo de Telas para Indumentaria | Mayorista de Telas en Once | Textil CCE",
   meta: [
     {
       name: "description",
-      content: "Descubrí el catálogo completo de Textil CCE en Once. Telas de moda, confección, urbanas y de sastrería. Venta por mayor al mejor precio.",
+      content: "Descubrí el catálogo completo de Textil CCE en Once. Telas por rollo en colores clásicos para producción continua. Venta por mayor al mejor precio.",
     },
   ],
 };

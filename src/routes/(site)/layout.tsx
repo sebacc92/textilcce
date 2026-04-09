@@ -3,6 +3,7 @@ import { routeLoader$, type RequestHandler } from "@builder.io/qwik-city";
 import { Header } from "../../components/header/header";
 import { Footer } from "../../components/footer/footer";
 import { WhatsAppButton } from "../../components/whatsapp-button";
+import { Chatbot } from "../../components/chatbot/chatbot";
 import { getDb } from "../../db/client";
 import { siteSettings } from "../../db/schema";
 import { eq } from "drizzle-orm";
@@ -34,6 +35,7 @@ export const useSiteSettingsLoader = routeLoader$(async ({ env }) => {
     address: 'Azcuénaga 650 – Once, Buenos Aires',
     businessHours: 'Lunes a Viernes: 9 a 17 hs',
     contactEmail: null,
+    chatbotEnabled: true,
     updatedAt: null,
   };
 });
@@ -50,6 +52,7 @@ export default component$(() => {
       </main>
       <Footer />
       <WhatsAppButton phone={whatsapp} message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
+      {settings.value.chatbotEnabled && <Chatbot />}
     </div>
   );
 });

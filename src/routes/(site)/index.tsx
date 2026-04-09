@@ -1,7 +1,14 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
-import { Link } from "@builder.io/qwik-city";
+import { routeLoader$, type DocumentHead, Link } from "@builder.io/qwik-city";
 import { useSiteSettingsLoader } from "./layout";
+import { getDb } from "../../db/client";
+import { siteContentLists } from "../../db/schema";
+
+export const useHomeFeaturesLoader = routeLoader$(async ({ env }) => {
+  const db = getDb(env);
+  const items = await db.select().from(siteContentLists).orderBy(siteContentLists.displayOrder);
+  return items.filter(l => l.type === 'home_feature');
+});
 import LocalImg from "~/media/local.webp?jsx"
 import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
 import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
@@ -10,6 +17,7 @@ import SquareImg from "~/media/square/1.jpeg?jsx"
 
 export default component$(() => {
   const settings = useSiteSettingsLoader();
+  const features = useHomeFeaturesLoader();
 
   return (
     <>
@@ -19,7 +27,7 @@ export default component$(() => {
           class="absolute inset-0 z-0 opacity-30 bg-cover bg-center"
           style={{ backgroundImage: settings.value?.heroImageUrl ? `url('${settings.value.heroImageUrl}')` : 'none' }}
         ></div>
-        <div class="absolute inset-0 z-0 bg-linear-to-r from-[#1e2c53]/95 via-[#1e2c53]/70 to-transparent"></div>
+        <div class="absolute inset-0 z-0 bg-[#1e2c53]/85"></div>
 
         <div class="container relative z-10 mx-auto px-6 text-left md:px-12 md:max-w-3xl md:mr-auto md:ml-12 lg:ml-24">
           <h1 class="mb-6 font-heading text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
@@ -53,10 +61,10 @@ export default component$(() => {
               Más de 20 años abasteciendo a la industria textil
             </h2>
             <p class="text-gray-700 leading-relaxed text-lg">
-              Textil CCE es un mayorista de telas para indumentaria ubicado en Once, Buenos Aires. Desde hace más de 20 años abastecemos a marcas de ropa, talleres de confección, diseñadores y emprendedores de todo el país con telas de calidad, colores de moda y precios competitivos.
+              Textil CCE es un mayorista de telas para indumentaria ubicado en Once, Buenos Aires. Desde hace más de 20 años abastecemos a marcas de ropa, talleres de confección, confeccionistas y emprendedores de todo el país con telas de calidad a precios competitivos. Nos especializamos en abastecer a la industria con materiales de alto rendimiento: Gabardinas con Lycra, Batistas para camisería, Frisa peinada y Algodón. Trabajamos un stock permanente de colores clásicos, incorporando opciones de moda para cada temporada.
             </p>
             <p class="text-gray-700 leading-relaxed text-lg">
-              Nuestro local, ubicado en Azcuénaga 650, se encuentra en uno de los centros textiles más importantes de Argentina, donde ofrecemos una amplia variedad de telas ideales para desarrollar colecciones de moda. Trabajamos con reposición permanente de stock para que nuestros clientes puedan producir sin interrupciones.
+              Nuestro local, ubicado en Azcuénaga 650, se encuentra en uno de los centros textiles más importantes de Argentina, donde ofrecemos una amplia variedad de telas mayoristas. Trabajamos con reposición permanente de stock para que nuestros clientes puedan producir sin interrupciones.
             </p>
           </div>
           <div>
@@ -77,46 +85,30 @@ export default component$(() => {
             <p class="mt-4 text-gray-500">Somos tu proveedor de telas para ropa confiable en Buenos Aires.</p>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Más de 20 años en el mercado",
-                desc: "Trayectoria comprobada y experiencia abasteciendo al rubro textil en Once.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-              },
-              {
-                title: "Ventas Mayoristas",
-                desc: "Condiciones ideales y precios competitivos para marcas, talleres y emprendedores.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>,
-              },
-              {
-                title: "Amplio Surtido",
-                desc: "Gran variedad de telas para indumentaria con reposición constante.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>,
-              },
-              {
-                title: "Colores de Temporada",
-                desc: "Paletas actualizadas y texturas que marcan tendencia en cada colección.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>,
-              },
-              {
-                title: "Excelente Relación Precio-Calidad",
-                desc: "Materiales confiables que optimizan la rentabilidad de tu producción.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>,
-              },
-              {
-                title: "Envíos a todo el país",
-                desc: "Despachamos mercadería a toda Argentina de forma rápida y segura.",
-                icon: <svg class="h-10 w-10 text-[#1e2c53]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>,
-              },
-            ].map((item, index) => (
-              <div key={index} class="flex flex-col items-center rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                <div class="mb-5 rounded-xl bg-[#1e2c53]/5 p-4">
-                  {item.icon}
+            {features.value.length > 0 ? features.value.map((item) => (
+              <div key={item.id} class="flex flex-col items-center rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+                <div class="mb-5 rounded-xl bg-[#1e2c53]/5 p-4 text-[#1e2c53]">
+                  {/* Default Lucide Icons fallback */}
+                  {item.icon === 'package-check' ? (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                  ) : item.icon === 'layers' ? (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                  ) : item.icon === 'archive' ? (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                  ) : item.icon === 'piggy-bank' ? (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                  ) : item.icon === 'truck' ? (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                  ) : (
+                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  )}
                 </div>
                 <h3 class="mb-2 font-heading text-xl font-semibold text-[#1e2c53]">{item.title}</h3>
-                <p class="text-sm text-gray-500">{item.desc}</p>
+                <p class="text-sm text-gray-500">{item.description}</p>
               </div>
-            ))}
+            )) : (
+              <div class="col-span-full text-center text-gray-500 py-6">Agrega características desde el administrador.</div>
+            )}
           </div>
         </div>
       </section>
@@ -135,17 +127,18 @@ export default component$(() => {
             </Link>
           </div>
 
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { title: "Telas de Moda", ImgComp: Horiz1, href: "/catalogo/" },
-              { title: "Confección y Sastrería", ImgComp: Horiz2, href: "/catalogo/" },
-              { title: "Moda Urbana", ImgComp: Horiz3, href: "/catalogo/" },
+              { title: "Gabardinas y Rígidos", ImgComp: Horiz1, href: "/catalogo/#gabardinas" },
+              { title: "Telas para Camisería", ImgComp: Horiz2, href: "/catalogo/#camiseria" },
+              { title: "Punto y Algodón", ImgComp: Horiz3, href: "/catalogo/#punto-y-algodon" },
+              { title: "Telas Estampadas", ImgComp: SquareImg, href: "/catalogo/#telas-estampadas" },
             ].map((cat, index) => (
               <Link key={index} href={cat.href} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
                 <cat.ImgComp
                   class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div class="absolute inset-0 bg-linear-to-t from-[#1e2c53]/90 via-[#1e2c53]/30 to-transparent"></div>
+                <div class="absolute inset-0 bg-[#1e2c53]/60 transition-colors group-hover:bg-[#1e2c53]/50"></div>
                 <div class="absolute bottom-6 left-6 right-6">
                   <h3 class="font-heading text-2xl font-bold text-white">{cat.title}</h3>
                 </div>
