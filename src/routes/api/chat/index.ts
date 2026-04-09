@@ -81,37 +81,48 @@ Si preguntan por precios por rollo, di: "Los precios varían según el volumen. 
       parts: [{ text: msg.content }],
     }));
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiApiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: systemPrompt }],
+    let replyText = '';
+    const fallbackMessage = `Ups, en este momento tengo muchas consultas simultáneas. 😅 Por favor, para darte una atención rápida, escribinos directamente a nuestro WhatsApp oficial: ${settings?.whatsappNumber || ''}`;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiApiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        contents: geminiMessages,
-        generationConfig: {
-          maxOutputTokens: 300,
-          temperature: 0.7,
-        },
-      }),
-    });
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemPrompt }],
+          },
+          contents: geminiMessages,
+          generationConfig: {
+            maxOutputTokens: 400,
+            temperature: 0.3,
+          },
+        }),
+        signal: controller.signal,
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Gemini error:', errorData);
-      json(500, { error: 'Hubo un problema al procesar la respuesta con la IA (Gemini).' });
-      return;
-    }
+      clearTimeout(timeoutId);
 
-    const data = await response.json();
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!response.ok) {
+        console.error('Gemini error de API, status:', response.status);
+        replyText = fallbackMessage;
+      } else {
+        const data = await response.json();
+        replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!replyText) {
-      console.error('Gemini validación fallida:', data);
-      json(500, { error: 'Formato de respuesta inválido de Gemini.' });
-      return;
+        if (!replyText) {
+          console.error('Gemini validación fallida:', data);
+          replyText = fallbackMessage;
+        }
+      }
+    } catch (geminiErr: any) {
+      console.error('Error procesando respuesta o timeout de Gemini:', geminiErr);
+      replyText = fallbackMessage;
     }
 
     if (sessionId) {
