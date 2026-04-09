@@ -30,6 +30,7 @@ export default component$(() => {
     { label: 'Productos', href: '/admin/productos/' },
     { label: 'Ajustes', href: '/admin/ajustes/' },
     { label: 'Usuarios', href: '/admin/usuarios/' },
+    { label: 'Chats de IA', href: '/admin/chats/' },
   ];
 
   return (

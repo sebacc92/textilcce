@@ -70,3 +70,28 @@ export const siteSettings = sqliteTable('site_settings', {
   chatbotEnabled: integer('chatbot_enabled', { mode: 'boolean' }).default(true),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });
+
+export const chatSessions = sqliteTable('chat_sessions', {
+  id: text('id').primaryKey(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  lastActive: integer('last_active', { mode: 'timestamp' }),
+});
+
+export const chatMessages = sqliteTable('chat_messages', {
+  id: text('id').primaryKey(),
+  sessionId: text('session_id').notNull().references(() => chatSessions.id),
+  role: text('role').notNull(),
+  content: text('content').notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+});
+
+export const chatSessionsRelations = relations(chatSessions, ({ many }) => ({
+  messages: many(chatMessages),
+}));
+
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+  session: one(chatSessions, {
+    fields: [chatMessages.sessionId],
+    references: [chatSessions.id],
+  }),
+}));

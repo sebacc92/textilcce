@@ -1,6 +1,6 @@
 import { type RequestHandler } from '@builder.io/qwik-city';
 import { getDb } from '../../../db/client';
-import { siteSettings, categories } from '../../../db/schema';
+import { siteSettings, categories, chatSessions, chatMessages } from '../../../db/schema';
 import { eq } from 'drizzle-orm';
 
 export const onPost: RequestHandler = async (requestEvent) => {
@@ -22,23 +22,51 @@ export const onPost: RequestHandler = async (requestEvent) => {
       return;
     }
 
-    const { messages } = body;
+    const { messages, sessionId } = body;
+
+    if (sessionId) {
+      await db.insert(chatSessions).values({
+        id: sessionId,
+        createdAt: new Date(),
+        lastActive: new Date()
+      }).onConflictDoUpdate({
+        target: chatSessions.id,
+        set: { lastActive: new Date() }
+      });
+
+      const lastUserMessage = messages[messages.length - 1];
+      if (lastUserMessage && lastUserMessage.role === 'user') {
+        const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random()*1000);
+        await db.insert(chatMessages).values({
+          id: idStr,
+          sessionId: sessionId,
+          role: 'user',
+          content: lastUserMessage.content,
+          createdAt: new Date()
+        });
+      }
+    }
 
     // Fetch categories
     const allCategories = await db.select().from(categories);
     const categoryNames = allCategories.map((c) => c.name).join(', ');
 
     // System prompt
-    const systemPrompt = `Eres el asistente virtual corporativo de Textil CCE. Vendes telas por mayor B2B. 
-Las categorías principales que trabajamos son: ${categoryNames || 'variedad de telas'}.
-Nuestro número de WhatsApp para ventas es: ${settings?.whatsappNumber || 'A consultar'}.
-Puntualmente atendemos en el horario: ${settings?.businessHours || 'A consultar'}.
-Nos encontramos físicamente en: ${settings?.address || 'A consultar'}.
+    const systemPrompt = `Eres el Asistente Comercial de Textil CCE. Tu objetivo es asesorar a clientes mayoristas.
+Datos de la empresa:
+- WhatsApp: ${settings?.whatsappNumber || 'A consultar'}
+- Ubicación: ${settings?.address || 'A consultar'} en Once, CABA.
+- Categorías: ${categoryNames || 'variedad de telas'}.
 
-Reglas obligatorias:
-1. Responde de forma muy concisa, profesional y enfocada siempre en concretar ventas al por mayor (B2B).
-2. Si un usuario te pide precios precisos de la tela, métricas o stock detallado, indícale amablemente que deben comunicarse por WhatsApp para obtener la lista de precios oficial y el stock al momento.
-3. El tono debe ser formal pero amistoso, resolutivo.`;
+Tu personalidad:
+- Tono: ${(settings as any)?.aiTone || 'Profesional y directo'}.
+- Estilo: Responde en párrafos cortos. Usa emojis textiles (🧵, 👗) con moderación.
+
+Instrucciones del Negocio (Cargadas por el cliente):
+"${(settings as any)?.chatbotKnowledge || ''}"
+
+Regla de Oro:
+Si preguntan por precios por rollo, di: "Los precios varían según el volumen. Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial: ${settings?.whatsappNumber || 'A consultar'}".`;
 
     const geminiApiKey = env.get('GEMINI_API_KEY');
     if (!geminiApiKey) {
@@ -83,6 +111,17 @@ Reglas obligatorias:
       console.error('Gemini validación fallida:', data);
       json(500, { error: 'Formato de respuesta inválido de Gemini.' });
       return;
+    }
+
+    if (sessionId) {
+       const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random()*1000);
+       await db.insert(chatMessages).values({
+         id: idStr,
+         sessionId: sessionId,
+         role: 'assistant',
+         content: replyText,
+         createdAt: new Date()
+       });
     }
 
     json(200, { reply: { role: 'assistant', content: replyText } });

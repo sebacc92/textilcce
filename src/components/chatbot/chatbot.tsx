@@ -15,10 +15,20 @@ export const Chatbot = component$(() => {
         content: '¡Hola! Soy el asistente virtual de Textil CCE. ¿En qué te puedo ayudar con tu pedido mayorista?',
       },
     ] as Message[],
+    sessionId: '',
   });
 
   const inputValue = useSignal('');
   const messagesContainerRef = useSignal<HTMLDivElement>();
+
+  useVisibleTask$(() => {
+    let sId = sessionStorage.getItem('chatbot_session_id');
+    if (!sId) {
+      sId = 'sess-' + Date.now().toString() + Math.random().toString(36).substring(2, 9);
+      sessionStorage.setItem('chatbot_session_id', sId);
+    }
+    state.sessionId = sId;
+  });
 
   // Scroll to bottom when messages update
   useVisibleTask$(({ track }) => {
@@ -45,6 +55,7 @@ export const Chatbot = component$(() => {
         body: JSON.stringify({
           // Only send the last N messages to save tokens and only user/assistant
           messages: state.messages.filter(m => m.role !== 'system').slice(-5),
+          sessionId: state.sessionId,
         }),
       });
 
