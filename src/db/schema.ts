@@ -68,6 +68,8 @@ export const siteSettings = sqliteTable('site_settings', {
   statsCoverage: text('stats_coverage'),
   mapEmbedUrl: text('map_embed_url'),
   chatbotEnabled: integer('chatbot_enabled', { mode: 'boolean' }).default(true),
+  aiTone: text('ai_tone'),
+  chatbotKnowledge: text('chatbot_knowledge'),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });
 
