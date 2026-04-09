@@ -18,9 +18,10 @@ const DEFAULT_SETTINGS = {
   address: '',
   businessHours: '',
   contactEmail: '',
-  chatbotEnabled: true,
+  aiEnabled: true,
   aiTone: '',
-  chatbotKnowledge: '',
+  aiKnowledge: '',
+  aiCallToAction: '',
   updatedAt: null,
 };
 
@@ -57,9 +58,10 @@ export const useUpdateSettingsAction = routeAction$(
         address: data.address || null,
         businessHours: data.businessHours || null,
         contactEmail: data.contactEmail || null,
-        chatbotEnabled: data.chatbotEnabled === 'on', // Checkboxes send "on" if checked, missing if not
+        aiEnabled: data.aiEnabled === 'on', // Checkboxes send "on" if checked, missing if not
         aiTone: data.aiTone || null,
-        chatbotKnowledge: data.chatbotKnowledge || null,
+        aiKnowledge: data.aiKnowledge || null,
+        aiCallToAction: data.aiCallToAction || null,
         updatedAt: new Date(),
       };
 
@@ -86,9 +88,10 @@ export const useUpdateSettingsAction = routeAction$(
     address: z.string().optional(),
     businessHours: z.string().optional(),
     contactEmail: z.string().optional(),
-    chatbotEnabled: z.string().optional(),
+    aiEnabled: z.string().optional(),
     aiTone: z.string().optional(),
-    chatbotKnowledge: z.string().optional(),
+    aiKnowledge: z.string().optional(),
+    aiCallToAction: z.string().optional(),
   }),
 );
 
@@ -320,12 +323,12 @@ export default component$(() => {
           <div class="flex items-center gap-3">
             <input
               type="checkbox"
-              id="chatbotEnabled"
-              name="chatbotEnabled"
-              checked={s.chatbotEnabled ?? true}
+              id="aiEnabled"
+              name="aiEnabled"
+              checked={s.aiEnabled ?? true}
               class="w-5 h-5 rounded text-slate-900 border-slate-300 focus:ring-slate-500 transition"
             />
-            <label for="chatbotEnabled" class="text-sm font-medium text-slate-700">Activar Chatbot en la página pública</label>
+            <label for="aiEnabled" class="text-sm font-medium text-slate-700">Activar Chatbot en la página pública</label>
           </div>
 
           <div class="pt-2">
@@ -341,15 +344,27 @@ export default component$(() => {
           </div>
 
           <div>
-            <label for="chatbotKnowledge" class="block text-sm font-medium text-slate-700 mb-1">Instrucciones del Negocio (Base de Conocimiento)</label>
+            <label for="aiKnowledge" class="block text-sm font-medium text-slate-700 mb-1">Instrucciones del Negocio (Base de Conocimiento)</label>
             <textarea
-              id="chatbotKnowledge"
-              name="chatbotKnowledge"
+              id="aiKnowledge"
+              name="aiKnowledge"
               rows={4}
               placeholder="Ingresa reglas extra para la IA. Ej: Promociones actuales 20% off abonando en efectivo en el local."
               class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
-            >{s.chatbotKnowledge || ''}</textarea>
+            >{s.aiKnowledge || ''}</textarea>
             <p class="text-xs text-slate-400 mt-1">Reglas personalizadas que la IA adoptará como memoria obligatoria.</p>
+          </div>
+
+          <div>
+            <label for="aiCallToAction" class="block text-sm font-medium text-slate-700 mb-1">Llamado a la Acción (Precios/Ventas)</label>
+            <textarea
+              id="aiCallToAction"
+              name="aiCallToAction"
+              rows={2}
+              placeholder="Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial:"
+              class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+            >{s.aiCallToAction || ''}</textarea>
+            <p class="text-xs text-slate-400 mt-1">Texto final que la IA agregará a los presupuestos. Generalmente dirige a WhatsApp.</p>
           </div>
         </div>
 

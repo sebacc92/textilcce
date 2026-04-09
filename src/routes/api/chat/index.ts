@@ -2,6 +2,7 @@ import { type RequestHandler } from '@builder.io/qwik-city';
 import { getDb } from '../../../db/client';
 import { siteSettings, categories, chatSessions, chatMessages } from '../../../db/schema';
 import { eq } from 'drizzle-orm';
+import OpenAI from 'openai';
 
 export const onPost: RequestHandler = async (requestEvent) => {
   try {
@@ -11,7 +12,7 @@ export const onPost: RequestHandler = async (requestEvent) => {
     const db = getDb(env);
     const [settings] = await db.select().from(siteSettings).where(eq(siteSettings.id, '1')).limit(1);
 
-    if (settings && !settings.chatbotEnabled) {
+    if (settings && !settings.aiEnabled) {
       json(403, { error: 'El Chatbot se encuentra deshabilitado actualmente.' });
       return;
     }
@@ -63,23 +64,27 @@ Tu personalidad:
 - Estilo: Responde en párrafos cortos. Usa emojis textiles (🧵, 👗) con moderación.
 
 Instrucciones del Negocio (Cargadas por el cliente):
-"${settings?.chatbotKnowledge || ''}"
+"${settings?.aiKnowledge || ''}"
 
 Regla de Oro:
-Si preguntan por precios por rollo, di: "Los precios varían según el volumen. Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial: ${settings?.whatsappNumber || 'A consultar'}".`;
+Si preguntan por precios por rollo, di: "Los precios varían según el volumen. ${settings?.aiCallToAction || 'Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial:'} ${settings?.whatsappNumber || 'A consultar'}".`;
 
-    console.log('systemPrompt', systemPrompt)
-    const geminiApiKey = env.get('GEMINI_API_KEY');
-    if (!geminiApiKey) {
-      console.error('GEMINI_API_KEY no está configurada.');
-      json(500, { error: 'API Key de Gemini no configurada.' });
+    const openaiApiKey = env.get('OPENAI_API_KEY') || (typeof process !== 'undefined' ? process.env.OPENAI_API_KEY : '');
+    if (!openaiApiKey) {
+      console.error('OPENAI_API_KEY no está configurada.');
+      json(500, { error: 'API Key de OpenAI no configurada.' });
       return;
     }
 
-    const geminiMessages = messages.map((msg: any) => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }],
-    }));
+    const openai = new OpenAI({ apiKey: openaiApiKey });
+
+    const openAiMessages = [
+      { role: 'system', content: systemPrompt },
+      ...messages.map((msg: any) => ({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: msg.content,
+      }))
+    ];
 
     let replyText = '';
     const fallbackMessage = `Ups, en este momento tengo muchas consultas simultáneas. 😅 Por favor, para darte una atención rápida, escribinos directamente a nuestro WhatsApp oficial: ${settings?.whatsappNumber || ''}`;
@@ -88,40 +93,26 @@ Si preguntan por precios por rollo, di: "Los precios varían según el volumen. 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiApiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await openai.chat.completions.create(
+        {
+          model: 'gpt-4o-mini',
+          messages: openAiMessages as any,
+          max_tokens: 500,
+          temperature: 0.3,
         },
-        body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: systemPrompt }],
-          },
-          contents: geminiMessages,
-          generationConfig: {
-            maxOutputTokens: 400,
-            temperature: 0.3,
-          },
-        }),
-        signal: controller.signal,
-      });
+        { signal: controller.signal }
+      );
 
       clearTimeout(timeoutId);
 
-      if (!response.ok) {
-        console.error('Gemini error de API, status:', response.status);
-        replyText = fallbackMessage;
-      } else {
-        const data = await response.json();
-        replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      replyText = response.choices[0]?.message?.content || '';
 
-        if (!replyText) {
-          console.error('Gemini validación fallida:', data);
-          replyText = fallbackMessage;
-        }
+      if (!replyText) {
+        console.error('OpenAI validación fallida: respuesta vacía');
+        replyText = fallbackMessage;
       }
-    } catch (geminiErr: any) {
-      console.error('Error procesando respuesta o timeout de Gemini:', geminiErr);
+    } catch (openaiErr: any) {
+      console.error('Error procesando respuesta o timeout de OpenAI:', openaiErr);
       replyText = fallbackMessage;
     }
 

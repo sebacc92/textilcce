@@ -35,7 +35,7 @@ export const useSiteSettingsLoader = routeLoader$(async ({ env }) => {
     address: 'Azcuénaga 650 – Once, Buenos Aires',
     businessHours: 'Lunes a Viernes: 9 a 17 hs',
     contactEmail: null,
-    chatbotEnabled: true,
+    aiEnabled: true,
     updatedAt: null,
   };
 });
@@ -52,7 +52,7 @@ export default component$(() => {
       </main>
       <Footer />
       <WhatsAppButton phone={whatsapp} message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
-      {settings.value.chatbotEnabled && <Chatbot />}
+      {settings.value.aiEnabled && <Chatbot />}
     </div>
   );
 });

@@ -67,9 +67,10 @@ export const siteSettings = sqliteTable('site_settings', {
   statsYears: text('stats_years'),
   statsCoverage: text('stats_coverage'),
   mapEmbedUrl: text('map_embed_url'),
-  chatbotEnabled: integer('chatbot_enabled', { mode: 'boolean' }).default(true),
-  aiTone: text('ai_tone'),
-  chatbotKnowledge: text('chatbot_knowledge'),
+  aiEnabled: integer('ai_enabled', { mode: 'boolean' }).default(true),
+  aiTone: text('ai_tone').default('Profesional y directo'),
+  aiKnowledge: text('ai_knowledge'),
+  aiCallToAction: text('ai_call_to_action').default('Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial:'),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });
 
