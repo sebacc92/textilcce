@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 export const onPost: RequestHandler = async (requestEvent) => {
   try {
     const { request, env, json } = requestEvent;
-    
+
     // Check if chatbot is enabled before processing
     const db = getDb(env);
     const [settings] = await db.select().from(siteSettings).where(eq(siteSettings.id, '1')).limit(1);
@@ -36,7 +36,7 @@ export const onPost: RequestHandler = async (requestEvent) => {
 
       const lastUserMessage = messages[messages.length - 1];
       if (lastUserMessage && lastUserMessage.role === 'user') {
-        const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random()*1000);
+        const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random() * 1000);
         await db.insert(chatMessages).values({
           id: idStr,
           sessionId: sessionId,
@@ -68,6 +68,7 @@ Instrucciones del Negocio (Cargadas por el cliente):
 Regla de Oro:
 Si preguntan por precios por rollo, di: "Los precios varían según el volumen. Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial: ${settings?.whatsappNumber || 'A consultar'}".`;
 
+    console.log('systemPrompt', systemPrompt)
     const geminiApiKey = env.get('GEMINI_API_KEY');
     if (!geminiApiKey) {
       console.error('GEMINI_API_KEY no está configurada.');
@@ -114,14 +115,14 @@ Si preguntan por precios por rollo, di: "Los precios varían según el volumen. 
     }
 
     if (sessionId) {
-       const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random()*1000);
-       await db.insert(chatMessages).values({
-         id: idStr,
-         sessionId: sessionId,
-         role: 'assistant',
-         content: replyText,
-         createdAt: new Date()
-       });
+      const idStr = 'msg-' + Date.now().toString() + Math.floor(Math.random() * 1000);
+      await db.insert(chatMessages).values({
+        id: idStr,
+        sessionId: sessionId,
+        role: 'assistant',
+        content: replyText,
+        createdAt: new Date()
+      });
     }
 
     json(200, { reply: { role: 'assistant', content: replyText } });

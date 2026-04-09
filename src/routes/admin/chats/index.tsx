@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { routeLoader$, Link, type DocumentHead } from '@builder.io/qwik-city';
+import { routeLoader$, routeAction$, Form, Link, type DocumentHead } from '@builder.io/qwik-city';
 import { getDb } from '../../../db/client';
 import { chatSessions, chatMessages } from '../../../db/schema';
 import { desc, count, eq } from 'drizzle-orm';
@@ -22,11 +22,38 @@ export const useChatSessions = routeLoader$(async ({ env }) => {
   return sessions;
 });
 
+export const useDeleteChatAction = routeAction$(async (data, { env, fail }) => {
+  const id = data.id as string;
+  if (!id) return fail(400, { message: 'ID no proporcionado.' });
+
+  try {
+    const db = getDb(env);
+    await db.delete(chatMessages).where(eq(chatMessages.sessionId, id));
+    await db.delete(chatSessions).where(eq(chatSessions.id, id));
+    return { success: true };
+  } catch (err) {
+    console.error('Error deleting chat session:', err);
+    return fail(500, { message: 'Error interno al eliminar el chat.' });
+  }
+});
+
 export default component$(() => {
   const sessionsLoader = useChatSessions();
+  const deleteAction = useDeleteChatAction();
 
   return (
     <div class="max-w-5xl mx-auto space-y-6 pb-20">
+      {deleteAction.value?.success && (
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg text-sm font-medium">
+          ✅ Chat eliminado exitosamente.
+        </div>
+      )}
+      {deleteAction.value?.failed && (
+        <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm font-medium">
+          ❌ {deleteAction.value.message}
+        </div>
+      )}
+
       <h1 class="text-3xl font-bold text-slate-800">Auditoría de IA</h1>
       <p class="text-slate-600">Revisa las conversaciones recientes que los clientes tuvieron con el Chatbot comercial.</p>
 
@@ -54,10 +81,24 @@ export default component$(() => {
                     {session.messageCount} mensajes
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <Link href={`/admin/chats/${session.id}/`} class="text-blue-600 hover:text-blue-900 font-semibold">
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-3 items-center">
+                  <Link href={`/admin/chats/${session.id}/`} class="text-blue-600 hover:text-blue-900 font-semibold transition">
                     Ver Chat &rarr;
                   </Link>
+                  <Form action={deleteAction}>
+                    <input type="hidden" name="id" value={session.id} />
+                    <button
+                      type="submit"
+                      class="text-red-500 hover:text-red-700 font-medium text-sm transition"
+                      onClick$={(e) => {
+                        if (!confirm(`¿Seguro que deseas eliminar este chat? Se borrarán ${session.messageCount} mensajes.`)) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      Eliminar
+                    </button>
+                  </Form>
                 </td>
               </tr>
             ))}
