@@ -17,45 +17,52 @@ async function seed() {
   const client = createClient({ url, authToken });
   const db = drizzle(client, { schema });
 
+  console.log('🗑️ Clearing existing categories and products...');
+  await db.delete(schema.products);
+  await db.delete(schema.categories);
+
   const categoriesToInsert = [
     {
       id: crypto.randomUUID(),
-      name: 'Gabardinas y Rígidos',
+      name: 'Gabardinas',
       slug: 'gabardinas',
-      description: 'Especialistas en Gabardinas con Lycra, 8oz y 6oz en colores clásicos.',
+      description: 'Variedad de Gabardinas en diferentes onzas y calidades',
       display_order: 1,
     },
     {
       id: crypto.randomUUID(),
-      name: 'Telas para Camisería',
-      slug: 'camiseria',
-      description: 'Amplia variedad en Batista y telas ligeras de alta calidad.',
+      name: 'Batista',
+      slug: 'batista',
+      description: 'Telas Batista ideales para camisería y forrería',
       display_order: 2,
     },
     {
       id: crypto.randomUUID(),
-      name: 'Punto y Algodón',
-      slug: 'punto-y-algodon',
-      description: 'Frisa peinada y algodón para confección de indumentaria cómoda.',
+      name: 'Friza',
+      slug: 'friza',
+      description: 'Telas cálidas, frisas peinadas y cardadas para invierno',
       display_order: 3,
     },
     {
       id: crypto.randomUUID(),
-      name: 'Telas Estampadas (Temporada)',
-      slug: 'telas-estampadas',
-      description: 'Gabardinas estampadas e ingresos con colores de moda.',
+      name: 'Rústico',
+      slug: 'rustico',
+      description: 'Rústico y Verano, especiales para climas cálidos y confección liviana',
       display_order: 4,
+    },
+    {
+      id: crypto.randomUUID(),
+      name: 'Productos Escolares',
+      slug: 'escolares',
+      description: 'Telas y artículos para uniformes colegiales',
+      display_order: 5,
     },
   ];
 
-  console.log('📦 Inserting 4 categories...');
+  console.log('📦 Inserting 5 B2B categories...');
   await db.insert(schema.categories).values(categoriesToInsert);
 
-  console.log('✅ Categories seeded successfully:');
-  categoriesToInsert.forEach((c) => {
-    console.log(`   - ${c.name} (${c.slug})`);
-  });
-
+  console.log('✅ Categories seeded successfully.');
   process.exit(0);
 }
 
