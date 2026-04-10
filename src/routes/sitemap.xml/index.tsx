@@ -2,7 +2,7 @@ import type { RequestHandler } from '@builder.io/qwik-city';
 import cityPlan from '@qwik-city-plan';
 import { createSitemap, type SitemapEntry } from './create-sitemap';
 
-export const onGet: RequestHandler = async ({ send, url }) => {
+export const onGet: RequestHandler = async ({ send, headers }) => {
   const origin = 'https://www.textilcce.com.ar';
 
   // Extraemos las rutas estáticas desde @qwik-city-plan
@@ -55,9 +55,10 @@ export const onGet: RequestHandler = async ({ send, url }) => {
 
   const xml = createSitemap(sitemapEntries);
 
-  // Enviamos la respuesta con el Header adecuado para XML
-  send(200, xml, {
-    'Content-Type': 'text/xml',
-    'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-  });
+  // Configuramos los Headers adecuados para SEO y XML
+  headers.set('Content-Type', 'text/xml');
+  headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+
+  // Enviamos la respuesta
+  send(200, xml);
 };
