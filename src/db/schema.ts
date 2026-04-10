@@ -28,7 +28,7 @@ export const products = sqliteTable('products', {
   oz: text('oz'),
   composicion: text('composicion'),
   ancho: text('ancho'),
-  colores: text('colores', { mode: 'json' }).$type<string[]>().default('[]'),
+  colores: text('colores', { mode: 'json' }).$type<string[]>().default([]),
   isOffer: integer('is_offer', { mode: 'boolean' }).default(false),
   season: text('season'),
   isActive: integer('is_active', { mode: 'boolean' }).default(true),
