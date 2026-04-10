@@ -9,12 +9,11 @@ export const useCategoriesLoader = routeLoader$(async ({ env }) => {
   return await db.select().from(categories).orderBy(categories.display_order);
 });
 
-export const useAddCategoryAction = routeAction$(async (_, { request, env, fail }) => {
-  const formData = await request.formData();
-  const name = (formData.get('name') as string)?.trim();
-  const slug = (formData.get('slug') as string)?.trim();
-  const description = (formData.get('description') as string)?.trim();
-  const displayOrder = parseInt(formData.get('displayOrder') as string, 10);
+export const useAddCategoryAction = routeAction$(async (data, { env, fail }) => {
+  const name = (data.name as string)?.trim();
+  const slug = (data.slug as string)?.trim();
+  const description = (data.description as string)?.trim();
+  const displayOrder = parseInt(data.displayOrder as string, 10);
 
   if (!name || !slug) {
     return fail(400, { message: 'Nombre y Slug son obligatorios.' });
@@ -43,13 +42,12 @@ export const useAddCategoryAction = routeAction$(async (_, { request, env, fail 
   }
 });
 
-export const useEditCategoryAction = routeAction$(async (_, { request, env, fail }) => {
-  const formData = await request.formData();
-  const id = formData.get('id') as string;
-  const name = (formData.get('name') as string)?.trim();
-  const slug = (formData.get('slug') as string)?.trim();
-  const description = (formData.get('description') as string)?.trim();
-  const displayOrder = parseInt(formData.get('displayOrder') as string, 10);
+export const useEditCategoryAction = routeAction$(async (data, { env, fail }) => {
+  const id = data.id as string;
+  const name = (data.name as string)?.trim();
+  const slug = (data.slug as string)?.trim();
+  const description = (data.description as string)?.trim();
+  const displayOrder = parseInt(data.displayOrder as string, 10);
 
   if (!id || !name || !slug) {
     return fail(400, { message: 'ID, Nombre y Slug son obligatorios.' });
@@ -77,9 +75,8 @@ export const useEditCategoryAction = routeAction$(async (_, { request, env, fail
   }
 });
 
-export const useDeleteCategoryAction = routeAction$(async (_, { request, env, fail }) => {
-  const formData = await request.formData();
-  const id = formData.get('id') as string;
+export const useDeleteCategoryAction = routeAction$(async (data, { env, fail }) => {
+  const id = data.id as string;
   
   if (!id) return fail(400, { message: 'ID no proporcionado.' });
   

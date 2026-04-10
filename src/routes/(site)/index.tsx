@@ -2,7 +2,8 @@ import { component$ } from "@builder.io/qwik";
 import { routeLoader$, type DocumentHead, Link } from "@builder.io/qwik-city";
 import { useSiteSettingsLoader } from "./layout";
 import { getDb } from "../../db/client";
-import { siteContentLists, categories } from "../../db/schema";
+import { siteContentLists, categories, brands } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 export const useHomeFeaturesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
@@ -14,6 +15,11 @@ export const useCategoriesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
   return await db.select().from(categories).orderBy(categories.display_order);
 });
+
+export const useBrandsLoader = routeLoader$(async ({ env }) => {
+  const db = getDb(env);
+  return await db.select().from(brands).where(eq(brands.isActive, true)).orderBy(brands.display_order);
+});
 import LocalImg from "~/media/local.webp?jsx"
 import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
 import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
@@ -24,6 +30,7 @@ export default component$(() => {
   const settings = useSiteSettingsLoader();
   const features = useHomeFeaturesLoader();
   const cats = useCategoriesLoader();
+  const brandsList = useBrandsLoader();
 
   return (
     <>
@@ -133,8 +140,8 @@ export default component$(() => {
             </Link>
           </div>
 
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {cats.value.map((cat, index) => {
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {cats.value.filter(c => c.slug !== 'rustico').map((cat, index) => {
               const Images = [Horiz1, Horiz2, Horiz3, SquareImg];
               const ImgComp = Images[index % Images.length];
               return (
@@ -151,6 +158,35 @@ export default component$(() => {
           </div>
         </div>
       </section>
+
+      {/* Brands carousel/grid */}
+      {brandsList.value.length > 0 && (
+        <section class="py-12 border-t border-slate-200">
+          <div class="container mx-auto px-6 md:px-12 text-center">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-8">Trabajamos con las mejores marcas</h3>
+            <div class="flex flex-wrap justify-center items-center gap-10 sm:gap-16">
+              {brandsList.value.map((b) => {
+                const isTecotex = b.name.toLowerCase().includes('tecotex') || b.name.toLowerCase().includes('texotex');
+                return (
+                  <div 
+                    key={b.id} 
+                    class={`flex h-20 sm:h-24 lg:h-28 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${
+                      isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
+                    }`}
+                  >
+                    <img 
+                      src={b.imageUrl} 
+                      alt={b.name} 
+                      class="max-h-full max-w-[200px] object-contain" 
+                      title={b.name} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Final CTA */}
       <section class="py-20 px-6 md:px-12">

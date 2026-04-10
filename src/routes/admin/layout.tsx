@@ -28,6 +28,7 @@ export default component$(() => {
     { label: 'Contenido', href: '/admin/contenido/' },
     { label: 'Categorías', href: '/admin/categorias/' },
     { label: 'Productos', href: '/admin/productos/' },
+    { label: 'Marcas', href: '/admin/marcas/' },
     { label: 'Ajustes', href: '/admin/ajustes/' },
     { label: 'Usuarios', href: '/admin/usuarios/' },
     { label: 'Chats de IA', href: '/admin/chats/' },

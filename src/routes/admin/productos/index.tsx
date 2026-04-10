@@ -11,6 +11,7 @@ export const useProductsLoader = routeLoader$(async ({ env }) => {
       id: products.id,
       name: products.name,
       isActive: products.isActive,
+      colores: products.colores,
       categoryName: categories.name,
     })
     .from(products)
@@ -67,6 +68,7 @@ export default component$(() => {
             <tr>
               <th class="px-6 py-4 font-medium">Nombre</th>
               <th class="px-6 py-4 font-medium">Categoría</th>
+              <th class="px-6 py-4 font-medium">Colores</th>
               <th class="px-6 py-4 font-medium">Estado</th>
               <th class="px-6 py-4 font-medium text-right">Acciones</th>
             </tr>
@@ -74,7 +76,7 @@ export default component$(() => {
           <tbody class="divide-y divide-slate-100">
             {productsList.value.length === 0 ? (
               <tr>
-                <td colSpan={4} class="px-6 py-8 text-center text-slate-500">
+                <td colSpan={5} class="px-6 py-8 text-center text-slate-500">
                   No hay productos registrados. Crea uno nuevo.
                 </td>
               </tr>
@@ -83,6 +85,12 @@ export default component$(() => {
                 <tr key={p.id} class="hover:bg-slate-50">
                   <td class="px-6 py-4 font-medium text-slate-900">{p.name}</td>
                   <td class="px-6 py-4">{p.categoryName || 'Sin categoría'}</td>
+                  <td class="px-6 py-4 text-slate-500">
+                    {p.colores && p.colores.length > 0 
+                      ? <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">{p.colores.length} colores</span>
+                      : <span class="text-xs italic text-slate-400">Ninguno</span>
+                    }
+                  </td>
                   <td class="px-6 py-4">
                     <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${p.isActive ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'}`}>
                       {p.isActive ? 'Activo' : 'Inactivo'}

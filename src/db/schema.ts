@@ -105,3 +105,12 @@ export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
     references: [chatSessions.id],
   }),
 }));
+
+export const brands = sqliteTable('brands', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  imageUrl: text('image_url').notNull(),
+  display_order: integer('display_order').default(0),
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+});

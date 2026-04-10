@@ -29,11 +29,16 @@ export const useCreateProductAction = routeAction$(
       }
 
       const db = getDb(requestEvent.env);
+      const coloresArray = data.colores
+        ? data.colores.split(',').map(c => c.trim()).filter(Boolean)
+        : [];
+
       await db.insert(products).values({
         id: crypto.randomUUID(),
         name: data.name,
         categoryId: data.categoryId,
         description: data.description || null,
+        colores: coloresArray,
         imageUrl,
         isActive: true,
         createdAt: new Date(),
@@ -52,6 +57,7 @@ export const useCreateProductAction = routeAction$(
     categoryId: z.string().min(1, 'La categoría es obligatoria'),
     description: z.string().optional(),
     image: z.any().optional(),
+    colores: z.string().optional(),
   }),
 );
 
@@ -124,6 +130,12 @@ export default component$(() => {
             <div class="sm:col-span-2">
               <label for="description" class="block text-sm font-medium text-slate-700">Descripción (Opcional)</label>
               <textarea id="description" name="description" rows={3} class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2"></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="colores" class="block text-sm font-medium text-slate-700">Colores Disponibles</label>
+              <textarea id="colores" name="colores" rows={2} placeholder="Ej: Blanco, Negro, Azul Marino" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2"></textarea>
+              <p class="mt-1 text-xs text-slate-400">Separe los colores con una coma (,). Esto creará un botón por cada color.</p>
             </div>
 
             <div class="sm:col-span-2">

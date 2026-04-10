@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import { routeLoader$, Link, type DocumentHead } from "@builder.io/qwik-city";
 import { getDb } from "../../../db/client";
 import { categories, products } from "../../../db/schema";
@@ -21,6 +21,43 @@ export const useCatalogLoader = routeLoader$(async ({ env }) => {
     ...cat,
     products: allProducts.filter((p) => p.categoryId === cat.id),
   }));
+});
+
+export const ColorsList = component$((props: { colores: string[] }) => {
+  const showAll = useSignal(false);
+  
+  return (
+    <div class="mt-3">
+      <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+        {props.colores.length} Colores Disponibles:
+      </span>
+      <div class="flex flex-wrap gap-1.5">
+        {props.colores.slice(0, showAll.value ? props.colores.length : 5).map((color: string, idx: number) => (
+          <span key={idx} class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-gray-100 text-gray-700 border border-gray-200">
+            {color}
+          </span>
+        ))}
+        {!showAll.value && props.colores.length > 5 && (
+          <button 
+            preventdefault:click
+            onClick$={() => (showAll.value = true)}
+            class="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#1e2c53]/10 text-[#1e2c53] border border-[#1e2c53]/20 hover:bg-[#1e2c53]/20 transition-colors"
+          >
+            + {props.colores.length - 5} más
+          </button>
+        )}
+        {showAll.value && props.colores.length > 5 && (
+          <button 
+            preventdefault:click
+            onClick$={() => (showAll.value = false)}
+            class="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200 transition-colors"
+          >
+            - Ver menos
+          </button>
+        )}
+      </div>
+    </div>
+  );
 });
 
 export default component$(() => {
@@ -115,6 +152,9 @@ export default component$(() => {
                           <p class="mt-1.5 text-sm text-gray-500 line-clamp-2">
                             {product.description}
                           </p>
+                        )}
+                        {product.colores && product.colores.length > 0 && (
+                          <ColorsList colores={product.colores} />
                         )}
                         <a
                           href={`https://wa.me/5491144048614?text=${encodeURIComponent(`Hola, me interesa el producto: ${product.name}`)}`}
