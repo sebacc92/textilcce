@@ -1,6 +1,6 @@
 import { type RequestHandler } from '@builder.io/qwik-city';
 import { getDb } from '../../../db/client';
-import { siteSettings, categories, chatSessions, chatMessages } from '../../../db/schema';
+import { siteSettings, categories, chatSessions, chatMessages, products } from '../../../db/schema';
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 
@@ -48,9 +48,13 @@ export const onPost: RequestHandler = async (requestEvent) => {
       }
     }
 
-    // Fetch categories
-    const allCategories = await db.select().from(categories);
+    // Fetch categories and products
+    const [allCategories, allProducts] = await Promise.all([
+      db.select().from(categories),
+      db.select().from(products)
+    ]);
     const categoryNames = allCategories.map((c) => c.name).join(', ');
+    const catalogoDetallado = allProducts.map(p => `- ${p.name} (${p.fabricante || 'Sin Fab'}) - Colores: [${Array.isArray(p.colores) ? p.colores.join(', ') : 'Ninguno'}]`).join('\n');
 
     // System prompt
     const systemPrompt = `Eres el Asistente Comercial de Textil CCE. Tu propósito único y exclusivo es asesorar a clientes mayoristas sobre telas y servicios de la empresa.
@@ -67,6 +71,9 @@ DATOS EN TIEMPO REAL:
 - WhatsApp: ${settings?.whatsappNumber}
 - Categorías Activas: ${categoryNames}
 - Novedades del Dueño: "${settings?.aiKnowledge}"
+
+Especificaciones del Catálogo:
+${catalogoDetallado}
 
 REGLAS DE COMPORTAMIENTO (CRÍTICAS):
 1. RESTRICCIÓN DE DOMINIO: Si el usuario pregunta sobre cualquier tema que no esté relacionado con Textil CCE, telas, confección o pedidos mayoristas, responde: "Lo siento, como asistente de Textil CCE solo puedo ayudarte con consultas relacionadas a nuestro catálogo de telas y servicios mayoristas. ¿En qué tela estás interesado hoy?"

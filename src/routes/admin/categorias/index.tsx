@@ -231,94 +231,176 @@ export default component$(() => {
               </button>
             </div>
 
-            <Form
-              action={editingCategory.value ? editAction : addAction}
-              class="space-y-5"
-              onSubmitCompleted$={() => {
-                if (addAction.value?.success || editAction.value?.success) {
-                  showModal.value = false;
-                  editingCategory.value = null;
-                }
-              }}
-              spaReset
-            >
-              {editingCategory.value && (
+            {editingCategory.value ? (
+              <Form
+                action={editAction}
+                class="space-y-5"
+                onSubmitCompleted$={() => {
+                  if (editAction.value?.success) {
+                    showModal.value = false;
+                    editingCategory.value = null;
+                  }
+                }}
+                spaReset
+              >
                 <input type="hidden" name="id" value={editingCategory.value.id} />
-              )}
-              <div>
-                <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={editingCategory.value?.name || ''}
-                  required
-                  placeholder="Ej: Telas de Moda"
-                  class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
-                />
-              </div>
-
-              <div>
-                <label for="slug" class="block text-sm font-medium text-slate-700 mb-1">Slug</label>
-                <input
-                  type="text"
-                  id="slug"
-                  name="slug"
-                  value={editingCategory.value?.slug || ''}
-                  required
-                  placeholder="Ej: telas-de-moda"
-                  class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition font-mono"
-                />
-                <p class="mt-1 text-xs text-slate-400">Solo minúsculas, números y guiones.</p>
-              </div>
-
-              <div>
-                <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Descripción (Opcional)</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={editingCategory.value?.description || ''}
-                  rows={3}
-                  placeholder="Breve descripción de la categoría..."
-                  class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
-                />
-              </div>
-
-              <div>
-                <label for="displayOrder" class="block text-sm font-medium text-slate-700 mb-1">Orden de visualización</label>
-                <input
-                  type="number"
-                  id="displayOrder"
-                  name="displayOrder"
-                  value={editingCategory.value?.display_order ?? ''}
-                  min={0}
-                  placeholder="0"
-                  class="block w-24 rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
-                />
-              </div>
-
-              {(addAction.value?.failed || editAction.value?.failed) && (
-                <div class="text-sm font-medium text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
-                  {addAction.value?.message || editAction.value?.message}
+                
+                <div>
+                  <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={editingCategory.value.name}
+                    required
+                    placeholder="Ej: Telas de Moda"
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
                 </div>
-              )}
 
-              <div class="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick$={() => { showModal.value = false; editingCategory.value = null; }}
-                  class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-800 transition"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  class="bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm"
-                >
-                  {editingCategory.value ? 'Actualizar' : 'Crear Categoría'}
-                </button>
-              </div>
-            </Form>
+                <div>
+                  <label for="slug" class="block text-sm font-medium text-slate-700 mb-1">Slug</label>
+                  <input
+                    type="text"
+                    id="slug"
+                    name="slug"
+                    value={editingCategory.value.slug}
+                    required
+                    placeholder="Ej: telas-de-moda"
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition font-mono"
+                  />
+                  <p class="mt-1 text-xs text-slate-400">Solo minúsculas, números y guiones.</p>
+                </div>
+
+                <div>
+                  <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Descripción (Opcional)</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={editingCategory.value.description || ''}
+                    rows={3}
+                    placeholder="Breve descripción de la categoría..."
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label for="displayOrder" class="block text-sm font-medium text-slate-700 mb-1">Orden de visualización</label>
+                  <input
+                    type="number"
+                    id="displayOrder"
+                    name="displayOrder"
+                    value={editingCategory.value.display_order ?? ''}
+                    min={0}
+                    placeholder="0"
+                    class="block w-24 rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
+                </div>
+
+                {editAction.value?.failed && (
+                  <div class="text-sm font-medium text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
+                    {editAction.value.message}
+                  </div>
+                )}
+
+                <div class="flex justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick$={() => { showModal.value = false; editingCategory.value = null; }}
+                    class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-800 transition"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm"
+                  >
+                    Actualizar
+                  </button>
+                </div>
+              </Form>
+            ) : (
+              <Form
+                action={addAction}
+                class="space-y-5"
+                onSubmitCompleted$={() => {
+                  if (addAction.value?.success) {
+                    showModal.value = false;
+                  }
+                }}
+                spaReset
+              >
+                <div>
+                  <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Ej: Telas de Moda"
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label for="slug" class="block text-sm font-medium text-slate-700 mb-1">Slug</label>
+                  <input
+                    type="text"
+                    id="slug"
+                    name="slug"
+                    required
+                    placeholder="Ej: telas-de-moda"
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition font-mono"
+                  />
+                  <p class="mt-1 text-xs text-slate-400">Solo minúsculas, números y guiones.</p>
+                </div>
+
+                <div>
+                  <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Descripción (Opcional)</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows={3}
+                    placeholder="Breve descripción de la categoría..."
+                    class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label for="displayOrder" class="block text-sm font-medium text-slate-700 mb-1">Orden de visualización</label>
+                  <input
+                    type="number"
+                    id="displayOrder"
+                    name="displayOrder"
+                    min={0}
+                    placeholder="0"
+                    class="block w-24 rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+                  />
+                </div>
+
+                {addAction.value?.failed && (
+                  <div class="text-sm font-medium text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
+                    {addAction.value.message}
+                  </div>
+                )}
+
+                <div class="flex justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick$={() => { showModal.value = false; }}
+                    class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-800 transition"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm"
+                  >
+                    Crear Categoría
+                  </button>
+                </div>
+              </Form>
+            )}
           </div>
         </div>
       )}
