@@ -2,12 +2,17 @@ import { component$ } from "@builder.io/qwik";
 import { routeLoader$, type DocumentHead, Link } from "@builder.io/qwik-city";
 import { useSiteSettingsLoader } from "./layout";
 import { getDb } from "../../db/client";
-import { siteContentLists } from "../../db/schema";
+import { siteContentLists, categories } from "../../db/schema";
 
 export const useHomeFeaturesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
   const items = await db.select().from(siteContentLists).orderBy(siteContentLists.displayOrder);
   return items.filter(l => l.type === 'home_feature');
+});
+
+export const useCategoriesLoader = routeLoader$(async ({ env }) => {
+  const db = getDb(env);
+  return await db.select().from(categories).orderBy(categories.display_order);
 });
 import LocalImg from "~/media/local.webp?jsx"
 import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
@@ -18,6 +23,7 @@ import SquareImg from "~/media/square/1.jpeg?jsx"
 export default component$(() => {
   const settings = useSiteSettingsLoader();
   const features = useHomeFeaturesLoader();
+  const cats = useCategoriesLoader();
 
   return (
     <>
@@ -128,22 +134,20 @@ export default component$(() => {
           </div>
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: "Gabardinas y Rígidos", ImgComp: Horiz1, href: "/catalogo/#gabardinas" },
-              { title: "Telas para Camisería", ImgComp: Horiz2, href: "/catalogo/#camiseria" },
-              { title: "Punto y Algodón", ImgComp: Horiz3, href: "/catalogo/#punto-y-algodon" },
-              { title: "Telas Estampadas", ImgComp: SquareImg, href: "/catalogo/#telas-estampadas" },
-            ].map((cat, index) => (
-              <Link key={index} href={cat.href} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
-                <cat.ImgComp
+            {cats.value.map((cat, index) => {
+              const Images = [Horiz1, Horiz2, Horiz3, SquareImg];
+              const ImgComp = Images[index % Images.length];
+              return (
+              <Link key={cat.id} href={`/catalogo/#${cat.slug}`} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
+                <ImgComp
                   class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div class="absolute inset-0 bg-[#1e2c53]/60 transition-colors group-hover:bg-[#1e2c53]/50"></div>
                 <div class="absolute bottom-6 left-6 right-6">
-                  <h3 class="font-heading text-2xl font-bold text-white">{cat.title}</h3>
+                  <h3 class="font-heading text-2xl font-bold text-white">{cat.name}</h3>
                 </div>
               </Link>
-            ))}
+            )})}
           </div>
         </div>
       </section>

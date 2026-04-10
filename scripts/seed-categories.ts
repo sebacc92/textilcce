@@ -38,8 +38,8 @@ async function seed() {
     },
     {
       id: crypto.randomUUID(),
-      name: 'Friza',
-      slug: 'friza',
+      name: 'Frisa',
+      slug: 'frisa',
       description: 'Telas cálidas, frisas peinadas y cardadas para invierno',
       display_order: 3,
     },
@@ -49,17 +49,10 @@ async function seed() {
       slug: 'rustico',
       description: 'Rústico y Verano, especiales para climas cálidos y confección liviana',
       display_order: 4,
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Productos Escolares',
-      slug: 'escolares',
-      description: 'Telas y artículos para uniformes colegiales',
-      display_order: 5,
-    },
+    }
   ];
 
-  console.log('📦 Inserting 5 B2B categories...');
+  console.log('📦 Inserting 4 B2B categories...');
   await db.insert(schema.categories).values(categoriesToInsert);
 
   console.log('✅ Categories seeded successfully.');
