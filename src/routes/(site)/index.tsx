@@ -20,7 +20,6 @@ export const useBrandsLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
   return await db.select().from(brands).where(eq(brands.isActive, true)).orderBy(brands.display_order);
 });
-import LocalImg from "~/media/local.webp?jsx"
 import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
 import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
 import Horiz3 from "~/media/horizontales/3.jpeg?jsx"
@@ -82,11 +81,11 @@ export default component$(() => {
           </div>
           <div class="relative flex justify-center lg:justify-end w-full">
             <div class="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[420px] aspect-[9/16] overflow-hidden rounded-2xl md:rounded-[2rem] shadow-xl md:shadow-2xl bg-slate-900 border-4 md:border-[6px] border-white ring-1 ring-slate-100">
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
+              <video
+                autoplay
+                loop
+                muted
+                playsInline
                 class="absolute inset-0 w-full h-full object-cover"
               >
                 <source src="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4" type="video/mp4" />
