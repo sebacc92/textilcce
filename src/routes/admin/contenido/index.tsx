@@ -152,9 +152,9 @@ export default component$(() => {
             <h3 class="font-semibold text-slate-800 mb-4">Añadir nueva ventaja</h3>
             <Form action={addListItemAction} class="grid gap-4 sm:grid-cols-2">
                <input type="hidden" name="type" value="home_feature" />
-               <input type="text" name="title" required placeholder="Título" class="rounded border-gray-300 p-2 text-sm" />
-               <input type="text" name="icon" placeholder="Icono Lucide (ej: star, truck, check)" class="rounded border-gray-300 p-2 text-sm" />
-               <input type="text" name="description" placeholder="Descripción corta" class="rounded border-gray-300 p-2 text-sm sm:col-span-2" />
+               <input type="text" name="title" required placeholder="Título" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" />
+               <input type="text" name="icon" placeholder="Icono Lucide (ej: star, truck, check)" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" />
+               <input type="text" name="description" placeholder="Descripción corta" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all sm:col-span-2" />
                <div class="sm:col-span-2 flex justify-end">
                  <button type="submit" class="bg-slate-900 text-white px-4 py-2 rounded font-medium text-sm hover:bg-slate-800">Añadir Feature</button>
                </div>
@@ -178,24 +178,24 @@ export default component$(() => {
              
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">Párrafo Principal (Historia)</label>
-               <textarea name="aboutP1" rows={4} class="w-full rounded border-gray-300 p-3 text-sm focus:ring-[#6272b3]" value={settings.value?.aboutP1 || ''}></textarea>
+               <textarea name="aboutP1" rows={4} class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" value={settings.value?.aboutP1 || ''}></textarea>
              </div>
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">Párrafo Secundario (Local / Filosofía)</label>
-               <textarea name="aboutP2" rows={4} class="w-full rounded border-gray-300 p-3 text-sm focus:ring-[#6272b3]" value={settings.value?.aboutP2 || ''}></textarea>
+               <textarea name="aboutP2" rows={4} class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" value={settings.value?.aboutP2 || ''}></textarea>
              </div>
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">Nuestro Compromiso (Caja Azul)</label>
-               <textarea name="commitmentText" rows={3} class="w-full rounded border-gray-300 p-3 text-sm focus:ring-[#6272b3]" value={settings.value?.commitmentText || ''}></textarea>
+               <textarea name="commitmentText" rows={3} class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" value={settings.value?.commitmentText || ''}></textarea>
              </div>
              <div class="grid grid-cols-2 gap-4">
                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">Estadística Métrica 1 (Años)</label>
-                  <input type="text" name="statsYears" class="w-full rounded border-gray-300 p-2 text-sm" placeholder="20+" value={settings.value?.statsYears || ''} />
+                  <input type="text" name="statsYears" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="20+" value={settings.value?.statsYears || ''} />
                </div>
                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">Estadística Métrica 2 (Cobertura)</label>
-                  <input type="text" name="statsCoverage" class="w-full rounded border-gray-300 p-2 text-sm" placeholder="TODO" value={settings.value?.statsCoverage || ''} />
+                  <input type="text" name="statsCoverage" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="TODO" value={settings.value?.statsCoverage || ''} />
                </div>
              </div>
 
@@ -236,8 +236,8 @@ export default component$(() => {
                 <h3 class="font-medium text-sm text-slate-800 mb-3">Agregar Beneficio</h3>
                 <Form action={addListItemAction} class="space-y-3">
                    <input type="hidden" name="type" value="b2b_benefit" />
-                   <input type="text" name="title" required placeholder="Título" class="w-full rounded border-gray-300 p-2 text-sm" />
-                   <input type="text" name="description" placeholder="Descripción" class="w-full rounded border-gray-300 p-2 text-sm" />
+                   <input type="text" name="title" required placeholder="Título" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" />
+                   <input type="text" name="description" placeholder="Descripción" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" />
                    <button type="submit" class="w-full bg-slate-800 text-white rounded py-2 text-sm font-medium hover:bg-slate-700">Añadir</button>
                 </Form>
              </div>
@@ -265,7 +265,7 @@ export default component$(() => {
                 <h3 class="font-medium text-sm text-slate-800 mb-3">Agregar Cliente Base</h3>
                 <Form action={addListItemAction} class="space-y-3">
                    <input type="hidden" name="type" value="b2b_client" />
-                   <input type="text" name="title" required placeholder="Ej: Emprendedores textiles" class="w-full rounded border-gray-300 p-2 text-sm" />
+                   <input type="text" name="title" required placeholder="Ej: Emprendedores textiles" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" />
                    <button type="submit" class="w-full bg-slate-800 text-white rounded py-2 text-sm font-medium hover:bg-slate-700">Añadir Cliente</button>
                 </Form>
              </div>
@@ -289,27 +289,27 @@ export default component$(() => {
              <div class="grid grid-cols-2 gap-4">
                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">Email de Contacto</label>
-                  <input type="email" name="contactEmail" class="w-full rounded border-gray-300 p-2 text-sm" placeholder="info@textilcce.com" value={settings.value?.contactEmail || ''} />
+                  <input type="email" name="contactEmail" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="info@textilcce.com" value={settings.value?.contactEmail || ''} />
                </div>
                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp (Número)</label>
-                  <input type="text" name="whatsappNumber" class="w-full rounded border-gray-300 p-2 text-sm" placeholder="5491100000000" value={settings.value?.whatsappNumber || ''} />
+                  <input type="text" name="whatsappNumber" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="5491100000000" value={settings.value?.whatsappNumber || ''} />
                </div>
              </div>
              
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">Dirección Física</label>
-               <input type="text" name="address" class="w-full rounded border-gray-300 p-2 text-sm" placeholder="Azcuénaga 650, Once, Buenos Aires" value={settings.value?.address || ''} />
+               <input type="text" name="address" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="Azcuénaga 650, Once, Buenos Aires" value={settings.value?.address || ''} />
              </div>
 
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">Horarios de Atención</label>
-               <textarea name="businessHours" rows={2} class="w-full rounded border-gray-300 p-3 text-sm focus:ring-[#6272b3] font-mono" placeholder="L a V: 9 a 18 hs&#10;Sábados: 9 a 14 hs" value={settings.value?.businessHours || ''}></textarea>
+               <textarea name="businessHours" rows={2} class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 font-mono placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="L a V: 9 a 18 hs&#10;Sábados: 9 a 14 hs" value={settings.value?.businessHours || ''}></textarea>
              </div>
 
              <div>
                <label class="block text-sm font-medium text-slate-700 mb-1">URL de Inserción del Mapa (Google Maps)</label>
-               <input type="text" name="mapEmbedUrl" class="w-full rounded border-gray-300 p-2 text-sm font-mono text-gray-600" placeholder="https://www.google.com/maps/embed?pb=..." value={settings.value?.mapEmbedUrl || ''} />
+               <input type="text" name="mapEmbedUrl" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm text-slate-800 font-mono placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:border-transparent transition-all" placeholder="https://www.google.com/maps/embed?pb=..." value={settings.value?.mapEmbedUrl || ''} />
                <p class="text-xs text-gray-400 mt-1">Ingresa solo la URL que se encuentra dentro del atributo <code>src="..."</code> del código iframe de Google Maps.</p>
              </div>
 

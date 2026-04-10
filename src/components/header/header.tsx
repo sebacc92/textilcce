@@ -1,5 +1,6 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
+import { NavLink } from "../nav-link/nav-link";
 import Logo from "~/media/logos/horizontal-pantoneP103-16.png?jsx&w=170&h=72"
 
 export const Header = component$(() => {
@@ -56,13 +57,14 @@ export const Header = component$(() => {
           {/* Desktop Navigation */}
           <nav class="flex items-center gap-8">
             {menuItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.href}
                 href={item.href}
                 class="text-lg font-semibold uppercase tracking-wide text-white/90 transition-colors hover:text-[#6272b3]"
+                activeClass="!text-[#6272b3]"
               >
                 {item.name}
-              </Link>
+              </NavLink>
             ))}
           </nav>
 
@@ -102,14 +104,15 @@ export const Header = component$(() => {
         <div class="md:hidden border-t border-white/10 bg-[#1e2c53] shadow-xl">
           <nav class="flex flex-col items-center p-6 space-y-1">
             {menuItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.href}
                 href={item.href}
                 class="text-center text-lg font-semibold uppercase tracking-wide text-white/90 py-3 px-4 rounded-lg transition-colors hover:bg-white/10 hover:text-[#6272b3] w-full"
+                activeClass="bg-white/10 !text-[#6272b3]"
                 onClick$={() => (isMenuOpen.value = false)}
               >
                 {item.name}
-              </Link>
+              </NavLink>
             ))}
           </nav>
 

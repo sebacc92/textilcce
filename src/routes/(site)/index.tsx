@@ -24,10 +24,10 @@ export default component$(() => {
       {/* Hero Section */}
       <section class="relative flex h-[85vh] w-full flex-col items-start justify-center overflow-hidden bg-[#1e2c53]">
         <div
-          class="absolute inset-0 z-0 opacity-30 bg-cover bg-center"
+          class="absolute inset-0 z-0 bg-cover bg-center"
           style={{ backgroundImage: settings.value?.heroImageUrl ? `url('${settings.value.heroImageUrl}')` : 'none' }}
         ></div>
-        <div class="absolute inset-0 z-0 bg-[#1e2c53]/85"></div>
+        <div class="absolute inset-0 z-0 bg-gradient-to-r from-[#1e2c53]/95 via-[#1e2c53]/70 to-[#1e2c53]/30"></div>
 
         <div class="container relative z-10 mx-auto px-6 text-left md:px-12 md:max-w-3xl md:mr-auto md:ml-12 lg:ml-24">
           <h1 class="mb-6 font-heading text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
@@ -45,7 +45,7 @@ export default component$(() => {
             </Link>
             <Link
               href="/mayoristas/"
-              class="inline-flex h-14 items-center justify-center rounded-lg border-2 border-white/40 bg-transparent px-8 font-semibold text-white transition-all hover:border-[#6272b3] hover:bg-[#6272b3]/20 focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:ring-offset-2 focus:ring-offset-[#1e2c53]"
+              class="inline-flex h-14 items-center justify-center rounded-lg bg-white/10 backdrop-blur-md border border-white/20 px-8 font-semibold text-white transition-all hover:bg-white/25 hover:border-white/40 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#1e2c53]"
             >
               Comprar por Mayor
             </Link>

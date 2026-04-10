@@ -86,11 +86,14 @@ export const Chatbot = component$(() => {
 
   return (
     <>
+      {!state.isOpen && (
+        <span class="fixed z-30 w-14 h-14 bottom-6 right-[4.5rem] bg-[#6272b3] rounded-full animate-ping opacity-75 pointer-events-none"></span>
+      )}
       <button
         onClick$={() => (state.isOpen = !state.isOpen)}
         class={[
-          "fixed z-40 p-3 rounded-full text-white shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center",
-          state.isOpen ? "bg-slate-700 w-12 h-12 bottom-6 right-[4.5rem]" : "bg-[#1e2c53] w-14 h-14 bottom-6 right-[4.5rem]" 
+          "fixed z-40 p-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center border border-slate-200 cursor-pointer",
+          state.isOpen ? "bg-slate-700 text-white w-12 h-12 bottom-6 right-[4.5rem]" : "bg-white text-[#1e2c53] w-14 h-14 bottom-6 right-[4.5rem]" 
         ]}
         aria-label="Abrir asistente virtual"
       >
