@@ -85,7 +85,7 @@ export default component$(() => {
                   <Link href={`/admin/chats/${session.id}/`} class="text-blue-600 hover:text-blue-900 font-semibold transition">
                     Ver Chat &rarr;
                   </Link>
-                  <Form action={deleteAction}>
+                  <Form action={deleteAction} onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar este chat permanentemente?')) e.preventDefault(); }}>
                     <input type="hidden" name="id" value={session.id} />
                     <button
                       type="submit"

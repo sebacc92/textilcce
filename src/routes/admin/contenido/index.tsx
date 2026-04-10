@@ -135,7 +135,7 @@ export default component$(() => {
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
              {homeFeatures.map(item => (
                  <div key={item.id} class="border border-gray-200 rounded-lg p-4 bg-gray-50 relative group">
-                   <Form action={deleteListItemAction}>
+                   <Form action={deleteListItemAction} onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar este elemento?')) e.preventDefault(); }}>
                      <input type="hidden" name="id" value={item.id} />
                      <button type="submit" class="absolute top-2 right-2 text-red-500 hover:text-red-700 opacity-50 group-hover:opacity-100 transition-opacity p-1">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -220,7 +220,7 @@ export default component$(() => {
              <ul class="space-y-3 mb-6">
                {b2bBenefits.map(item => (
                   <li key={item.id} class="flex items-start gap-3 p-3 bg-gray-50 rounded border border-gray-100 relative group">
-                     <Form action={deleteListItemAction} class="shrink-0 absolute right-2 top-2 opacity-50 hover:opacity-100">
+                     <Form action={deleteListItemAction} class="shrink-0 absolute right-2 top-2 opacity-50 hover:opacity-100" onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar este elemento?')) e.preventDefault(); }}>
                        <input type="hidden" name="id" value={item.id} />
                        <button type="submit" class="text-red-500 hover:text-red-700">X</button>
                      </Form>
@@ -253,7 +253,7 @@ export default component$(() => {
                {b2bClients.map(item => (
                   <li key={item.id} class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
                      <span class="font-medium text-sm text-slate-800">{item.title}</span>
-                     <Form action={deleteListItemAction}>
+                     <Form action={deleteListItemAction} onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar este elemento?')) e.preventDefault(); }}>
                        <input type="hidden" name="id" value={item.id} />
                        <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-bold px-2">X</button>
                      </Form>

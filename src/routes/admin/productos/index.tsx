@@ -90,7 +90,7 @@ export default component$(() => {
                   </td>
                   <td class="px-6 py-4 flex justify-end gap-3 items-center">
                     <Link href={`/admin/productos/${p.id}/edit/`} class="text-[#6272b3] hover:text-[#1e2c53] font-medium text-sm transition">Editar</Link>
-                    <Form action={deleteAction}>
+                    <Form action={deleteAction} onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar este producto?')) e.preventDefault(); }}>
                       <input type="hidden" name="id" value={p.id} />
                       <button
                         type="submit"

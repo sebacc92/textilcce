@@ -186,7 +186,7 @@ export default component$(() => {
                     >
                       Editar
                     </button>
-                    <Form action={deleteAction}>
+                    <Form action={deleteAction} onSubmit$={(e) => { if(!confirm('¿Estás seguro de eliminar esta categoría y sus dependencias?')) e.preventDefault(); }}>
                       <input type="hidden" name="id" value={cat.id} />
                       <button
                          type="submit"
