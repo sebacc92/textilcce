@@ -35,7 +35,7 @@ export default component$(() => {
   return (
     <>
       {/* Hero Section */}
-      <section class="relative flex h-[85vh] w-full flex-col items-start justify-center overflow-hidden bg-[#1e2c53]">
+      <section class="relative flex min-h-[85vh] w-full flex-col items-start justify-center overflow-hidden bg-[#1e2c53]">
         <div
           class="absolute inset-0 z-0 bg-cover bg-center"
           style={{ backgroundImage: settings.value?.heroImageUrl ? `url('${settings.value.heroImageUrl}')` : 'none' }}
@@ -80,8 +80,18 @@ export default component$(() => {
               Nuestro local, ubicado en Azcuénaga 650, se encuentra en uno de los centros textiles más importantes de Argentina, donde ofrecemos una amplia variedad de telas mayoristas. Trabajamos con reposición permanente de stock para que nuestros clientes puedan producir sin interrupciones.
             </p>
           </div>
-          <div>
-            <LocalImg />
+          <div class="relative flex justify-center lg:justify-end w-full">
+            <div class="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[420px] aspect-[9/16] overflow-hidden rounded-2xl md:rounded-[2rem] shadow-xl md:shadow-2xl bg-slate-900 border-4 md:border-[6px] border-white ring-1 ring-slate-100">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                class="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4" type="video/mp4" />
+              </video>
+            </div>
           </div>
         </div>
       </section>
@@ -103,17 +113,17 @@ export default component$(() => {
                 <div class="mb-5 rounded-xl bg-[#1e2c53]/5 p-4 text-[#1e2c53]">
                   {/* Default Lucide Icons fallback */}
                   {item.icon === 'package-check' ? (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                   ) : item.icon === 'layers' ? (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
                   ) : item.icon === 'archive' ? (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
                   ) : item.icon === 'piggy-bank' ? (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                   ) : item.icon === 'truck' ? (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                   ) : (
-                     <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   )}
                 </div>
                 <h3 class="mb-2 font-heading text-xl font-semibold text-[#1e2c53]">{item.title}</h3>
@@ -145,16 +155,17 @@ export default component$(() => {
               const Images = [Horiz1, Horiz2, Horiz3, SquareImg];
               const ImgComp = Images[index % Images.length];
               return (
-              <Link key={cat.id} href={`/catalogo/#${cat.slug}`} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
-                <ImgComp
-                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div class="absolute inset-0 bg-[#1e2c53]/60 transition-colors group-hover:bg-[#1e2c53]/50"></div>
-                <div class="absolute bottom-6 left-6 right-6">
-                  <h3 class="font-heading text-2xl font-bold text-white">{cat.name}</h3>
-                </div>
-              </Link>
-            )})}
+                <Link key={cat.id} href={`/catalogo/#${cat.slug}`} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
+                  <ImgComp
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-[#1e2c53]/60 transition-colors group-hover:bg-[#1e2c53]/50"></div>
+                  <div class="absolute bottom-6 left-6 right-6">
+                    <h3 class="font-heading text-2xl font-bold text-white">{cat.name}</h3>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -168,17 +179,16 @@ export default component$(() => {
               {brandsList.value.map((b) => {
                 const isTecotex = b.name.toLowerCase().includes('tecotex') || b.name.toLowerCase().includes('texotex');
                 return (
-                  <div 
-                    key={b.id} 
-                    class={`flex h-20 sm:h-24 lg:h-28 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${
-                      isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
-                    }`}
+                  <div
+                    key={b.id}
+                    class={`flex h-20 sm:h-24 lg:h-28 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
+                      }`}
                   >
-                    <img 
-                      src={b.imageUrl} 
-                      alt={b.name} 
-                      class="max-h-full max-w-[200px] object-contain" 
-                      title={b.name} 
+                    <img
+                      src={b.imageUrl}
+                      alt={b.name}
+                      class="max-h-full max-w-[200px] object-contain"
+                      title={b.name}
                     />
                   </div>
                 );
