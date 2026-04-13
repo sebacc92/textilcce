@@ -84,9 +84,9 @@ export default component$(() => {
           </div>
           <div class="relative flex justify-center lg:justify-end w-full">
             <div class="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[420px] aspect-[9/16] overflow-hidden rounded-2xl md:rounded-[2rem] shadow-xl md:shadow-2xl bg-slate-900 border-4 md:border-[6px] border-white ring-1 ring-slate-100">
-              <video 
+              <video
                 controls
-                playsInline 
+                playsInline
                 class="absolute inset-0 w-full h-full object-cover"
               >
                 <source src="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4" type="video/mp4" />
@@ -176,25 +176,21 @@ export default component$(() => {
       {brandsList.value.length > 0 && (
         <section class="py-12 border-t border-slate-200">
           <div class="container mx-auto px-6 md:px-12 text-center">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-8">Trabajamos con las mejores marcas</h3>
+            <h3 class="text-xl font-semibold uppercase tracking-wider text-slate-400 mb-8">Trabajamos con las mejores marcas</h3>
             <div class="flex flex-wrap justify-center items-center gap-10 sm:gap-16">
-              {brandsList.value.map((b) => {
-                const isTecotex = b.name.toLowerCase().includes('tecotex') || b.name.toLowerCase().includes('texotex');
-                return (
-                  <div
-                    key={b.id}
-                    class={`flex h-32 sm:h-40 lg:h-48 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
-                      }`}
-                  >
-                    <img
-                      src={b.imageUrl}
-                      alt={b.name}
-                      class="max-h-full max-w-[350px] object-contain"
-                      title={b.name}
-                    />
-                  </div>
-                );
-              })}
+              {brandsList.value.map((b) => (
+                <div
+                  key={b.id}
+                  class={`flex h-32 sm:h-40 lg:h-48 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 opacity-70 grayscale hover:grayscale-0 hover:opacity-100`}
+                >
+                  <img
+                    src={b.imageUrl}
+                    alt={b.name}
+                    class="max-h-full max-w-[350px] object-contain"
+                    title={b.name}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>

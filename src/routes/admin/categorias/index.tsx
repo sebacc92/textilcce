@@ -220,7 +220,15 @@ export default component$(() => {
         formData.set('categoryImage', compressedFile);
       }
 
-      await action.submit(formData);
+      const res = await action.submit(formData);
+      
+      // If success, close modal
+      if (res.value?.success) {
+        showModal.value = false;
+        if (editingCategory.value) {
+            editingCategory.value = null;
+        }
+      }
     } catch (error) {
       console.error('Error al subir imagen:', error);
     } finally {
@@ -411,17 +419,10 @@ export default component$(() => {
             </div>
 
             {editingCategory.value ? (
-              <Form
-                action={editAction}
+              <form
                 class="space-y-5"
                 preventdefault:submit
                 onSubmit$={handleSubmit}
-                onSubmitCompleted$={() => {
-                  if (editAction.value?.success) {
-                    showModal.value = false;
-                    editingCategory.value = null;
-                  }
-                }}
               >
                 <input type="hidden" name="id" value={editingCategory.value.id} />
 
@@ -512,18 +513,12 @@ export default component$(() => {
                     {isCompressing.value || editAction.isRunning ? 'Guardando...' : 'Actualizar'}
                   </button>
                 </div>
-              </Form>
+              </form>
             ) : (
-              <Form
-                action={addAction}
+              <form
                 class="space-y-5"
                 preventdefault:submit
                 onSubmit$={handleSubmit}
-                onSubmitCompleted$={() => {
-                  if (addAction.value?.success) {
-                    showModal.value = false;
-                  }
-                }}
               >
                 <div>
                   <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
@@ -603,7 +598,7 @@ export default component$(() => {
                     {isCompressing.value || addAction.isRunning ? 'Creando...' : 'Crear Categoría'}
                   </button>
                 </div>
-              </Form>
+              </form>
             )}
           </div>
         </div>
