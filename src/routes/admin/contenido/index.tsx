@@ -18,22 +18,45 @@ export const useListsLoader = routeLoader$(async ({ env }) => {
   return await db.select().from(siteContentLists).orderBy(siteContentLists.displayOrder);
 });
 
-export const useUpdateAboutAction = routeAction$(async (data, { env }) => {
-  const db = getDb(env);
-  await db.update(siteSettings).set({
-    aboutP1: data.aboutP1 || undefined,
-    aboutP2: data.aboutP2 || undefined,
-    commitmentText: data.commitmentText || undefined,
-    statsYears: data.statsYears || undefined,
-    statsCoverage: data.statsCoverage || undefined,
-  }).where(eq(siteSettings.id, '1'));
-  return { success: true };
+export const useUpdateAboutAction = routeAction$(async (data, requestEvent) => {
+  try {
+    let aboutImageUrl: string | undefined;
+
+    if (data.aboutImage && typeof data.aboutImage === 'object' && (data.aboutImage as Blob).size > 0) {
+      const file = data.aboutImage as File;
+      const fileName = file.name || `about-${Date.now()}.webp`;
+      const { url } = await put(fileName, file, {
+        access: 'public',
+        token: requestEvent.env.get('BLOB_READ_WRITE_TOKEN'),
+      });
+      aboutImageUrl = url;
+    }
+
+    const db = getDb(requestEvent.env);
+    const updateData: Record<string, any> = {
+      aboutP1: data.aboutP1 || undefined,
+      aboutP2: data.aboutP2 || undefined,
+      commitmentText: data.commitmentText || undefined,
+      statsYears: data.statsYears || undefined,
+      statsCoverage: data.statsCoverage || undefined,
+    };
+
+    if (aboutImageUrl) {
+      updateData.aboutImageUrl = aboutImageUrl;
+    }
+
+    await db.update(siteSettings).set(updateData).where(eq(siteSettings.id, '1'));
+    return { success: true };
+  } catch (e: any) {
+    return requestEvent.fail(500, { message: e.message || 'Error al guardar.' });
+  }
 }, zod$({
   aboutP1: z.string().optional(),
   aboutP2: z.string().optional(),
   commitmentText: z.string().optional(),
   statsYears: z.string().optional(),
   statsCoverage: z.string().optional(),
+  aboutImage: z.any().optional(),
 }));
 
 export const useUpdateContactAction = routeAction$(async (data, { env }) => {
@@ -157,6 +180,36 @@ export default component$(() => {
     }
   });
 
+  const handleAboutSubmit = $(async (_e: Event, currentTarget: HTMLFormElement) => {
+    if (isCompressing.value || updateAboutAction.isRunning) return;
+
+    isCompressing.value = true;
+    try {
+      const formData = new FormData(currentTarget);
+      const imageFile = formData.get('aboutImage') as File | null;
+
+      if (imageFile && imageFile.size > 0 && imageFile.name) {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+          fileType: 'image/webp' as const,
+          initialQuality: 0.85,
+        };
+        const compressedBlob = await imageCompression(imageFile, options);
+        const newFileName = imageFile.name.replace(/\.[^/.]+$/, '') + '.webp';
+        const compressedFile = new File([compressedBlob], newFileName, { type: 'image/webp' });
+        formData.set('aboutImage', compressedFile);
+      }
+
+      await updateAboutAction.submit(formData);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      isCompressing.value = false;
+    }
+  });
+
   const homeFeatures = listsData.value.filter(l => l.type === 'home_feature');
   const b2bBenefits = listsData.value.filter(l => l.type === 'b2b_benefit');
   const b2bClients = listsData.value.filter(l => l.type === 'b2b_client');
@@ -248,10 +301,23 @@ export default component$(() => {
             <p class="text-sm text-gray-500 mt-1">Configura la narrativa y estadísticas clave de la empresa.</p>
           </div>
 
-          <Form action={updateAboutAction} class="space-y-6">
+          <Form action={updateAboutAction} class="space-y-6" preventdefault:submit onSubmit$={handleAboutSubmit}>
             {updateAboutAction.value?.success && (
-              <div class="bg-emerald-50 text-emerald-700 p-3 rounded text-sm">Textos guardados correctamente.</div>
+              <div class="bg-emerald-50 text-emerald-700 p-3 rounded text-sm mb-4">Textos descriptivos de 'Nosotros' guardados correctamente.</div>
             )}
+            {updateAboutAction.value?.failed && (
+              <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm mb-4">Error: {updateAboutAction.value.message}</div>
+            )}
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Imagen "Sobre Nosotros"</label>
+              {settings.value?.aboutImageUrl && (
+                <div class="mb-3">
+                  <img src={settings.value.aboutImageUrl} alt="Sobre Nosotros" class="rounded-lg border border-slate-200 max-h-40 object-cover" />
+                </div>
+              )}
+              <input type="file" name="aboutImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition" />
+            </div>
 
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Párrafo Principal (Historia)</label>
@@ -277,8 +343,8 @@ export default component$(() => {
             </div>
 
             <div class="flex justify-end">
-              <button type="submit" class="bg-[#1e2c53] text-white px-6 py-2.5 rounded font-medium hover:bg-[#6272b3] transition relative">
-                {updateAboutAction.isRunning ? 'Guardando...' : 'Guardar Textos'}
+              <button type="submit" disabled={isCompressing.value || updateAboutAction.isRunning} class="bg-[#1e2c53] text-white px-6 py-2.5 rounded font-medium hover:bg-[#6272b3] transition disabled:opacity-50">
+                {isCompressing.value ? 'Optimizando...' : updateAboutAction.isRunning ? 'Guardando...' : 'Guardar'}
               </button>
             </div>
           </Form>

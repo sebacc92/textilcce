@@ -50,7 +50,7 @@ export default component$(() => {
       <main class="flex-1">
         <Slot />
       </main>
-      <Footer />
+      <Footer settings={settings.value} />
       <WhatsAppButton phone={whatsapp} message="Hola Textil CCE, me gustaría recibir más información sobre venta mayorista." />
       {settings.value.aiEnabled && <Chatbot />}
     </div>

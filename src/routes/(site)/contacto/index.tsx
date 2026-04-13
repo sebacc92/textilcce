@@ -1,7 +1,15 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { useSiteSettingsLoader } from "../layout";
 
 export default component$(() => {
+  const settings = useSiteSettingsLoader();
+  const data = settings.value;
+  const whatsapp = data.whatsappNumber?.replace(/[^0-9]/g, '') || '5491144048614';
+  
+  // Create an array of business hours strings by splitting the stored string
+  const businessHoursLines = data.businessHours ? data.businessHours.split('\n') : ['Lunes a Viernes:', '9:00 a 18:00 hs', '', 'Sábados:', '9:00 a 14:00 hs'];
+
   return (
     <div class="py-12 md:py-20 relative bg-gray-50">
       <div class="container mx-auto px-6 md:px-12 relative z-10">
@@ -22,7 +30,9 @@ export default component$(() => {
                   <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 </div>
                 <h3 class="font-heading font-bold text-[#1e2c53]">Dirección</h3>
-                <p class="mt-2 text-sm text-gray-500">Azcuénaga 650<br/>Once, Buenos Aires<br/>Argentina</p>
+                <p class="mt-2 text-sm text-gray-500 whitespace-pre-line">
+                  {data.address || 'Azcuénaga 650\nOnce, Buenos Aires\nArgentina'}
+                </p>
               </div>
 
               <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
@@ -30,7 +40,14 @@ export default component$(() => {
                   <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <h3 class="font-heading font-bold text-[#1e2c53]">Horarios</h3>
-                <p class="mt-2 text-sm text-gray-500">Lunes a Viernes:<br/>9:00 a 18:00 hs<br/><br/>Sábados:<br/>9:00 a 14:00 hs</p>
+                <p class="mt-2 text-sm text-gray-500">
+                  {businessHoursLines.map((line, idx) => (
+                    <span key={idx}>
+                      {line}
+                      {idx !== businessHoursLines.length - 1 && <br />}
+                    </span>
+                  ))}
+                </p>
               </div>
 
               <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
@@ -109,7 +126,7 @@ export default component$(() => {
                 </button>
 
                 <p class="mt-4 text-center text-xs text-gray-400">
-                  Al enviar aceptás que nos contactemos con vos. También podés comunicarte directo al <a href="https://wa.me/5491144048614" class="text-[#6272b3] hover:underline font-medium">WhatsApp</a>.
+                  Al enviar aceptás que nos contactemos con vos. También podés comunicarte directo al <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" class="text-[#6272b3] hover:underline font-medium">WhatsApp</a>.
                 </p>
               </form>
             </div>
@@ -118,15 +135,27 @@ export default component$(() => {
 
         {/* Google Maps Full Width */}
         <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm w-full">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.820625997235!2d-58.4012195!3d-34.6016925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca9342c3959d%3A0x384115e5d229ecc7!2sTEXTIL%20CCE!5e0!3m2!1ses-419!2sar!4v1700000000000!5m2!1ses-419!2sar"
-            width="100%"
-            class="min-h-[500px] md:min-h-[600px] w-full border-0"
-            allowFullscreen={false}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Mapa de ubicación Textil CCE"
-          ></iframe>
+          {data.mapEmbedUrl ? (
+            <iframe
+              src={data.mapEmbedUrl}
+              width="100%"
+              class="min-h-[500px] md:min-h-[600px] w-full border-0"
+              allowFullscreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Mapa de ubicación"
+            ></iframe>
+          ) : (
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.820625997235!2d-58.4012195!3d-34.6016925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca9342c3959d%3A0x384115e5d229ecc7!2sTEXTIL%20CCE!5e0!3m2!1ses-419!2sar!4v1700000000000!5m2!1ses-419!2sar"
+              width="100%"
+              class="min-h-[500px] md:min-h-[600px] w-full border-0"
+              allowFullscreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Mapa de ubicación Textil CCE"
+            ></iframe>
+          )}
         </div>
       </div>
     </div>

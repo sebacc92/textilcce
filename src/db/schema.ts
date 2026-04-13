@@ -73,6 +73,7 @@ export const siteSettings = sqliteTable('site_settings', {
   contactEmail: text('contact_email'),
   aboutP1: text('about_p1'),
   aboutP2: text('about_p2'),
+  aboutImageUrl: text('about_image_url'),
   commitmentText: text('commitment_text'),
   statsYears: text('stats_years'),
   statsCoverage: text('stats_coverage'),
