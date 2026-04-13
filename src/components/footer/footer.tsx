@@ -8,7 +8,6 @@ export interface FooterProps {
 
 export const Footer = component$<FooterProps>(({ settings }) => {
   const whatsappNumber = settings?.whatsappNumber || '+54 9 11 4404-8614';
-  const whatsappLink = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
   const addressLines = settings?.address ? settings.address.split('\n') : ['Azcuénaga 650, Once, CABA'];
   const hoursLines = settings?.businessHours ? settings.businessHours.split('\n') : ['Lunes a Viernes: 9 a 17 hs'];
 
