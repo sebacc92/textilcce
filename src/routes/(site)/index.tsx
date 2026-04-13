@@ -97,19 +97,15 @@ export default component$(() => {
       </section>
 
       {/* Benefits Section */}
-      <section class="relative bg-[#f9fafb] py-20">
-        <div class="absolute inset-0 z-0">
-          <SquareImg class="h-full w-full object-cover" />
-          <div class="absolute inset-0 bg-slate-100/90 backdrop-blur-[2px]"></div>
-        </div>
-        <div class="relative z-10 container mx-auto px-6 md:px-12">
+      <section class="bg-[#eef0f4] py-20">
+        <div class="container mx-auto px-6 md:px-12">
           <div class="mb-12 text-center">
             <h2 class="font-heading text-3xl font-bold tracking-tight text-[#1e2c53] sm:text-4xl">¿Por qué elegir Textil CCE?</h2>
             <p class="mt-4 text-gray-500">Somos tu proveedor de telas para ropa confiable en Buenos Aires.</p>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.value.length > 0 ? features.value.map((item) => (
-              <div key={item.id} class="flex flex-col items-center rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+              <div key={item.id} class="flex flex-col items-center rounded-xl border-2 border-gray-200 bg-white p-8 text-center shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[#1e2c53]">
                 <div class="mb-5 rounded-xl bg-[#1e2c53]/5 p-4 text-[#1e2c53]">
                   {/* Default Lucide Icons fallback */}
                   {item.icon === 'package-check' ? (
