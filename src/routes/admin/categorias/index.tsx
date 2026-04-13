@@ -355,7 +355,7 @@ export default component$(() => {
                       <input 
                         type="checkbox" 
                         class="sr-only peer" 
-                        checked={cat.isFeatured} 
+                        checked={cat.isFeatured ?? false} 
                         onChange$={(_, el) => {
                            toggleFeaturedAction.submit({ id: cat.id, isFeatured: el.checked.toString() });
                         }} 
