@@ -63,7 +63,7 @@ export default component$(() => {
             </div>
             <div class="mt-8 text-center border-t border-white/15 pt-6">
               <p class="mb-5 text-base text-white/70">
-                Si tenés una marca de ropa o estás empezando tu emprendimiento, podemos ayudarte a encontrar las telas adecuadas para tu colección.
+                Si necesitás una atención personalizada, no dudes en comunicarte o acercarte a nuestro showroom. Te esperamos con un café para atenderte de la mejor manera.
               </p>
               <a
                 href="https://wa.me/5491144048614"
