@@ -153,8 +153,31 @@ export default component$(() => {
                             {product.description}
                           </p>
                         )}
+                        
+                        {/* Detalles Técnicos */}
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-1.5 text-xs text-gray-600">
+                          {product.fabricante && <div><span class="font-semibold text-gray-400">Fabricante:</span> {product.fabricante}</div>}
+                          {product.composicion && <div><span class="font-semibold text-gray-400">Comp.:</span> {product.composicion}</div>}
+                          <div class="grid grid-cols-2 gap-2">
+                            {product.ancho && <div><span class="font-semibold text-gray-400">Ancho:</span> {product.ancho}</div>}
+                            {product.oz && <div><span class="font-semibold text-gray-400">OZ:</span> {product.oz}</div>}
+                            {product.rinde && <div><span class="font-semibold text-gray-400">Rinde:</span> {product.rinde}</div>}
+                            {product.complemento && <div><span class="font-semibold text-gray-400">Compl.:</span> {product.complemento}</div>}
+                          </div>
+                          
+                          {(product.sublimar || product.estampar || product.bordar) && (
+                            <div class="mt-1.5 flex flex-wrap gap-1.5">
+                              {product.sublimar && <span class="px-2 py-0.5 bg-[#6272b3]/10 text-[#6272b3] rounded text-[10px] uppercase font-bold tracking-wider">Sublimar</span>}
+                              {product.estampar && <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded text-[10px] uppercase font-bold tracking-wider">Estampar</span>}
+                              {product.bordar && <span class="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-[10px] uppercase font-bold tracking-wider">Bordar</span>}
+                            </div>
+                          )}
+                        </div>
+
                         {product.colores && product.colores.length > 0 && (
-                          <ColorsList colores={product.colores} />
+                          <div class="mt-4 pt-4 border-t border-gray-100">
+                            <ColorsList colores={product.colores} />
+                          </div>
                         )}
                         <a
                           href={`https://wa.me/5491144048614?text=${encodeURIComponent(`Hola, me interesa el producto: ${product.name}`)}`}

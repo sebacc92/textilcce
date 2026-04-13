@@ -40,6 +40,15 @@ export const useCreateProductAction = routeAction$(
         description: data.description || null,
         colores: coloresArray,
         imageUrl,
+        fabricante: data.fabricante || null,
+        oz: data.oz || null,
+        composicion: data.composicion || null,
+        ancho: data.ancho || null,
+        rinde: data.rinde || null,
+        complemento: data.complemento || null,
+        sublimar: data.sublimar === 'on' || data.sublimar === true,
+        estampar: data.estampar === 'on' || data.estampar === true,
+        bordar: data.bordar === 'on' || data.bordar === true,
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -58,6 +67,15 @@ export const useCreateProductAction = routeAction$(
     description: z.string().optional(),
     image: z.any().optional(),
     colores: z.string().optional(),
+    fabricante: z.string().optional(),
+    oz: z.string().optional(),
+    composicion: z.string().optional(),
+    ancho: z.string().optional(),
+    rinde: z.string().optional(),
+    complemento: z.string().optional(),
+    sublimar: z.union([z.string(), z.boolean()]).optional(),
+    estampar: z.union([z.string(), z.boolean()]).optional(),
+    bordar: z.union([z.string(), z.boolean()]).optional(),
   }),
 );
 
@@ -136,6 +154,56 @@ export default component$(() => {
               <label for="colores" class="block text-sm font-medium text-slate-700">Colores Disponibles</label>
               <textarea id="colores" name="colores" rows={2} placeholder="Ej: Blanco, Negro, Azul Marino" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2"></textarea>
               <p class="mt-1 text-xs text-slate-400">Separe los colores con una coma (,). Esto creará un botón por cada color.</p>
+            </div>
+
+            {/* Nuevos Campos (Procesos) */}
+            <div class="sm:col-span-2 space-y-3 mt-4 border-t pt-4 border-slate-200">
+              <h3 class="text-sm font-semibold text-slate-800">Procesos Soportados</h3>
+              <div class="flex gap-6">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" name="sublimar" class="sr-only peer" />
+                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                  <span class="ml-2 text-sm font-medium text-slate-700">Sublimar</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" name="estampar" class="sr-only peer" />
+                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                  <span class="ml-2 text-sm font-medium text-slate-700">Estampar</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" name="bordar" class="sr-only peer" />
+                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                  <span class="ml-2 text-sm font-medium text-slate-700">Bordar</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Nuevos Campos (Técnicos) */}
+            <div class="sm:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2 mt-2">
+              <div>
+                <label for="fabricante" class="block text-sm font-medium text-slate-700">Fabricante</label>
+                <input type="text" id="fabricante" name="fabricante" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
+              <div>
+                <label for="composicion" class="block text-sm font-medium text-slate-700">Composición</label>
+                <input type="text" id="composicion" name="composicion" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
+              <div>
+                <label for="ancho" class="block text-sm font-medium text-slate-700">Ancho</label>
+                <input type="text" id="ancho" name="ancho" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
+              <div>
+                <label for="oz" class="block text-sm font-medium text-slate-700">OZ</label>
+                <input type="text" id="oz" name="oz" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
+              <div>
+                <label for="rinde" class="block text-sm font-medium text-slate-700">Rinde</label>
+                <input type="text" id="rinde" name="rinde" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
+              <div>
+                <label for="complemento" class="block text-sm font-medium text-slate-700">Complemento (ej: Puño)</label>
+                <input type="text" id="complemento" name="complemento" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm border px-3 py-2" />
+              </div>
             </div>
 
             <div class="sm:col-span-2">
