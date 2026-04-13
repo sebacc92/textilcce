@@ -14,6 +14,8 @@ export const categories = sqliteTable('categories', {
   description: text('description'),
   slug: text('slug').notNull().unique(),
   display_order: integer('display_order').default(0),
+  imageUrl: text('image_url'),
+  isFeatured: integer('is_featured', { mode: 'boolean' }).default(false),
 });
 
 export const products = sqliteTable('products', {
@@ -32,6 +34,7 @@ export const products = sqliteTable('products', {
   isOffer: integer('is_offer', { mode: 'boolean' }).default(false),
   season: text('season'),
   isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  display_order: integer('display_order').default(0),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });
@@ -78,6 +81,10 @@ export const siteSettings = sqliteTable('site_settings', {
   aiTone: text('ai_tone').default('Profesional y directo'),
   aiKnowledge: text('ai_knowledge'),
   aiCallToAction: text('ai_call_to_action').default('Para pasarte la lista actualizada y el stock real de hoy, por favor escribinos a nuestro WhatsApp oficial:'),
+  ctaTitle: text('cta_title').default('¿Buscás telas por mayor para tu próxima colección?'),
+  ctaSubtitle: text('cta_subtitle').default('Nuestro equipo está listo para asesorarte. Escribinos por WhatsApp y recibí atención personalizada al instante.'),
+  ctaButtonText: text('cta_button_text').default('Escribinos por WhatsApp'),
+  ctaImageUrl: text('cta_image_url'),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });
 

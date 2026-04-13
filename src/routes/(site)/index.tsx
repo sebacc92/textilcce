@@ -13,7 +13,10 @@ export const useHomeFeaturesLoader = routeLoader$(async ({ env }) => {
 
 export const useCategoriesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
-  return await db.select().from(categories).orderBy(categories.display_order);
+  return await db.select()
+    .from(categories)
+    .where(eq(categories.isFeatured, true))
+    .orderBy(categories.display_order);
 });
 
 export const useBrandsLoader = routeLoader$(async ({ env }) => {
@@ -148,15 +151,17 @@ export default component$(() => {
           </div>
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {cats.value.filter(c => c.slug !== 'rustico').map((cat, index) => {
+            {cats.value.map((cat, index) => {
               const Images = [Horiz1, Horiz2, Horiz3, SquareImg];
               const ImgComp = Images[index % Images.length];
               return (
                 <Link key={cat.id} href={`/catalogo/#${cat.slug}`} class="group relative block h-80 overflow-hidden rounded-xl bg-[#1e2c53]">
-                  <ImgComp
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-[#1e2c53]/60 transition-colors group-hover:bg-[#1e2c53]/50"></div>
+                  {cat.imageUrl ? (
+                    <img src={cat.imageUrl} alt={cat.name} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  ) : (
+                    <ImgComp class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  )}
+                  <div class="absolute inset-0 bg-[#1e2c53]/50 transition-colors group-hover:bg-[#1e2c53]/40"></div>
                   <div class="absolute bottom-6 left-6 right-6">
                     <h3 class="font-heading text-2xl font-bold text-white">{cat.name}</h3>
                   </div>
@@ -178,13 +183,13 @@ export default component$(() => {
                 return (
                   <div
                     key={b.id}
-                    class={`flex h-20 sm:h-24 lg:h-28 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
+                    class={`flex h-32 sm:h-40 lg:h-48 flex-shrink-0 items-center justify-center rounded-xl p-3 sm:p-4 transition-all duration-300 ${isTecotex ? 'bg-black shadow-md' : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100'
                       }`}
                   >
                     <img
                       src={b.imageUrl}
                       alt={b.name}
-                      class="max-h-full max-w-[200px] object-contain"
+                      class="max-h-full max-w-[350px] object-contain"
                       title={b.name}
                     />
                   </div>
@@ -200,12 +205,16 @@ export default component$(() => {
         <div class="container mx-auto">
           <div class="relative overflow-hidden rounded-2xl bg-[#1e2c53] px-6 py-16 text-center text-white shadow-2xl sm:px-16 sm:py-20">
             <div class="absolute inset-0 opacity-10">
-              <Horiz1 class="h-full w-full object-cover" />
+              {settings.value?.ctaImageUrl ? (
+                <img src={settings.value.ctaImageUrl} alt="Background" class="h-full w-full object-cover" />
+              ) : (
+                <Horiz1 class="h-full w-full object-cover" />
+              )}
             </div>
             <div class="relative z-10 mx-auto max-w-2xl">
-              <h2 class="font-heading text-3xl font-bold tracking-tight sm:text-4xl">¿Buscás telas por mayor para tu próxima colección?</h2>
+              <h2 class="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{settings.value?.ctaTitle || '¿Buscás telas por mayor para tu próxima colección?'}</h2>
               <p class="mx-auto mt-4 max-w-xl text-lg text-white/70">
-                Nuestro equipo está listo para asesorarte. Escribinos por WhatsApp y recibí atención personalizada al instante.
+                {settings.value?.ctaSubtitle || 'Nuestro equipo está listo para asesorarte. Escribinos por WhatsApp y recibí atención personalizada al instante.'}
               </p>
               <div class="mt-10 flex justify-center">
                 <a
@@ -214,7 +223,7 @@ export default component$(() => {
                   rel="noopener noreferrer"
                   class="inline-flex h-14 items-center justify-center rounded-lg bg-[#6272b3] px-8 font-semibold text-white transition-all hover:bg-white hover:text-[#1e2c53] hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:ring-offset-2 focus:ring-offset-[#1e2c53]"
                 >
-                  Escribinos por WhatsApp
+                  {settings.value?.ctaButtonText || 'Escribinos por WhatsApp'}
                   <svg class="ml-2 h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.388 0 0 5.385 0 12.029c0 2.122.553 4.192 1.603 6.014L.162 23.3l5.405-1.418C7.329 22.84 9.351 23.362 11.512 23.362c6.641 0 12.03-5.388 12.03-12.031S18.151 0 11.512 0H12.03zm-4.144 6.784c.34-.006.702.012 1.053.05.321.035.753.125 1.018.736.335.77.942 2.302 1.025 2.474.083.172.138.373.027.59-.11.218-.166.353-.332.548-.166.195-.353.414-.509.57a.9.9 0 0 0-.25.641c.01.218.423.89 1.033 1.432.783.696 1.442.912 1.666 1.01.222.098.353.084.484-.064.133-.148.567-.66.719-.886.152-.226.305-.188.509-.111.205.077 1.294.613 1.516.724.221.111.369.166.424.258.055.092.055.535-.138 1.052-.194.516-1.135.992-1.578 1.026-.443.033-.941.055-3.21-.84-2.73-1.077-4.482-3.86-4.618-4.043-.138-.184-1.107-1.474-1.107-2.812s.692-1.996.941-2.254c.25-.258.553-.324.747-.324z" /></svg>
                 </a>
               </div>

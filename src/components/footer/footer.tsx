@@ -9,15 +9,15 @@ export const Footer = component$(() => {
         {/* Logo & Tagline */}
         <div class="space-y-6">
           <Logo />
-          <p class="text-sm text-white/70 leading-relaxed">
+          <p class="text-base text-white/70 leading-relaxed">
             Más de 20 años siendo líderes mayoristas de telas para indumentaria en Once, Buenos Aires.
           </p>
         </div>
 
         {/* Links */}
         <div class="space-y-4">
-          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-sm tracking-wider">Enlaces</h4>
-          <ul class="space-y-3 text-sm">
+          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-base tracking-wider">Enlaces</h4>
+          <ul class="space-y-3 text-base">
             <li><Link href="/catalogo/" class="text-white/80 hover:text-white transition-colors">Catálogo</Link></li>
             <li><Link href="/mayoristas/" class="text-white/80 hover:text-white transition-colors">Venta Mayorista</Link></li>
             <li><Link href="/nosotros/" class="text-white/80 hover:text-white transition-colors">Nosotros</Link></li>
@@ -27,8 +27,8 @@ export const Footer = component$(() => {
 
         {/* Contact & Hours */}
         <div class="space-y-4">
-          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-sm tracking-wider">Contacto y Horarios</h4>
-          <ul class="space-y-3 text-sm text-white/80">
+          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-base tracking-wider">Contacto y Horarios</h4>
+          <ul class="space-y-3 text-base text-white/80">
             <li class="flex items-start gap-2">
               <span class="text-[#6272b3] mt-0.5">📍</span>
               Azcuénaga 650, Once, CABA
@@ -46,7 +46,7 @@ export const Footer = component$(() => {
 
         {/* Social */}
         <div class="space-y-4">
-          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-sm tracking-wider">Redes Sociales</h4>
+          <h4 class="font-heading font-semibold text-[#6272b3] uppercase text-base tracking-wider">Redes Sociales</h4>
           <div class="flex gap-4">
             <a href="https://www.instagram.com/textil_cce/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:bg-[#6272b3] hover:text-white transition-all">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
@@ -62,7 +62,7 @@ export const Footer = component$(() => {
       </div>
 
       {/* Bottom bar */}
-      <div class="container mx-auto mt-12 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+      <div class="container mx-auto mt-12 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
         <span>&copy; {new Date().getFullYear()} Textil CCE. Todos los derechos reservados.</span>
         <span>Mayorista de telas en Once, Buenos Aires</span>
       </div>
