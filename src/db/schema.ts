@@ -130,3 +130,13 @@ export const brands = sqliteTable('brands', {
   isActive: integer('is_active', { mode: 'boolean' }).default(true),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 });
+
+export const instagramPosts = sqliteTable('instagram_posts', {
+  id: text('id').primaryKey(),
+  permalink: text('permalink'),
+  mediaUrl: text('media_url'),
+  mediaType: text('media_type'),
+  caption: text('caption'),
+  timestamp: text('timestamp'),
+});
+

@@ -2,8 +2,9 @@ import { component$ } from "@builder.io/qwik";
 import { routeLoader$, type DocumentHead, Link } from "@builder.io/qwik-city";
 import { useSiteSettingsLoader } from "./layout";
 import { getDb } from "../../db/client";
-import { siteContentLists, categories, brands } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import { siteContentLists, categories, brands, instagramPosts } from "../../db/schema";
+import { desc, eq } from "drizzle-orm";
+import { SocialFeed, MOCK_INSTAGRAM_POSTS } from "~/components/home/social-feed/social-feed";
 
 export const useHomeFeaturesLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
@@ -23,6 +24,30 @@ export const useBrandsLoader = routeLoader$(async ({ env }) => {
   const db = getDb(env);
   return await db.select().from(brands).where(eq(brands.isActive, true)).orderBy(brands.display_order);
 });
+
+export const useInstagramFeed = routeLoader$(async (requestEvent) => {
+  const db = getDb(requestEvent.env);
+  try {
+    const posts = await db.query.instagramPosts.findMany({
+      orderBy: [desc(instagramPosts.timestamp)],
+      limit: 6, // Traemos solo los 6 últimos
+    });
+
+    if (posts.length > 0) {
+      return posts.map((p) => ({
+        id: p.id,
+        imageUrl: p.mediaUrl,
+        link: p.permalink,
+        caption: p.caption || undefined,
+      }));
+    }
+
+    return MOCK_INSTAGRAM_POSTS;
+  } catch (error) {
+    console.error('Error cargando feed de instagram desde DB', error);
+    return MOCK_INSTAGRAM_POSTS;
+  }
+});
 import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
 import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
 import Horiz3 from "~/media/horizontales/3.jpeg?jsx"
@@ -33,6 +58,7 @@ export default component$(() => {
   const features = useHomeFeaturesLoader();
   const cats = useCategoriesLoader();
   const brandsList = useBrandsLoader();
+  const instagramFeed = useInstagramFeed();
 
   return (
     <>
@@ -191,6 +217,9 @@ export default component$(() => {
           </div>
         </section>
       )}
+
+      {/* Instagram Feed */}
+      <SocialFeed posts={instagramFeed.value} />
 
       {/* Final CTA */}
       <section class="py-20 px-6 md:px-12">
