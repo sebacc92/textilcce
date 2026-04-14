@@ -26,6 +26,7 @@ const DEFAULT_SETTINGS = {
   catalogTitle: 'Catálogo de Telas',
   catalogDescription: 'En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.\n\nNuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.',
   heroVideoUrl: 'https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4',
+  heroVideoPosterUrl: null,
   updatedAt: null,
 };
 
@@ -39,6 +40,7 @@ export const useUpdateSettingsAction = routeAction$(
   async (data, requestEvent) => {
     try {
       let heroImageUrl: string | undefined;
+      let heroVideoPosterUrl: string | undefined;
 
       if (data.heroImage && typeof data.heroImage === 'object' && (data.heroImage as Blob).size > 0) {
         const file = data.heroImage as File;
@@ -48,6 +50,16 @@ export const useUpdateSettingsAction = routeAction$(
           token: requestEvent.env.get('BLOB_READ_WRITE_TOKEN'),
         });
         heroImageUrl = url;
+      }
+
+      if (data.heroVideoPosterImage && typeof data.heroVideoPosterImage === 'object' && (data.heroVideoPosterImage as Blob).size > 0) {
+        const file = data.heroVideoPosterImage as File;
+        const fileName = file.name || `poster-${Date.now()}.webp`;
+        const { url } = await put(fileName, file, {
+          access: 'public',
+          token: requestEvent.env.get('BLOB_READ_WRITE_TOKEN'),
+        });
+        heroVideoPosterUrl = url;
       }
 
       const db = getDb(requestEvent.env);
@@ -74,6 +86,9 @@ export const useUpdateSettingsAction = routeAction$(
 
       if (heroImageUrl) {
         updateData.heroImageUrl = heroImageUrl;
+      }
+      if (heroVideoPosterUrl) {
+        updateData.heroVideoPosterUrl = heroVideoPosterUrl;
       }
 
       await db.update(siteSettings).set(updateData).where(eq(siteSettings.id, '1'));
@@ -102,6 +117,7 @@ export const useUpdateSettingsAction = routeAction$(
     catalogTitle: z.string().optional(),
     catalogDescription: z.string().optional(),
     heroVideoUrl: z.string().optional(),
+    heroVideoPosterImage: z.any().optional(),
   }),
 );
 
@@ -130,6 +146,21 @@ export default component$(() => {
         const newFileName = imageFile.name.replace(/\.[^/.]+$/, '') + '.webp';
         const compressedFile = new File([compressedBlob], newFileName, { type: 'image/webp' });
         formData.set('heroImage', compressedFile);
+      }
+
+      const posterFile = formData.get('heroVideoPosterFile') as File | null;
+      if (posterFile && posterFile.size > 0 && posterFile.name) {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+          fileType: 'image/webp' as const,
+          initialQuality: 0.85,
+        };
+        const compressedBlob = await imageCompression(posterFile, options);
+        const newFileName = 'poster-' + posterFile.name.replace(/\.[^/.]+$/, '') + '.webp';
+        const compressedFile = new File([compressedBlob], newFileName, { type: 'image/webp' });
+        formData.set('heroVideoPosterImage', compressedFile);
       }
 
       const videoFile = formData.get('heroVideoFile') as File | null;
@@ -249,10 +280,34 @@ export default component$(() => {
               type="file"
               id="heroVideoFile"
               name="heroVideoFile"
-              accept="video/*"
+              accept="video/*,.mov,.mp4"
               class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
             />
             <p class="text-xs text-slate-400 mt-1">Podés subir videos pesados. Se guardará de forma segura en Vercel Blobs.</p>
+          </div>
+
+          <div>
+            <label for="heroVideoPosterFile" class="block text-sm font-medium text-slate-700 mb-1">Imagen de Portada del Video (Preview)</label>
+            {s.heroVideoPosterUrl && (
+              <div class="mb-3">
+                <img
+                  src={s.heroVideoPosterUrl}
+                  alt="Poster actual"
+                  width={400}
+                  height={200}
+                  class="rounded-lg border border-slate-200 max-h-40 object-cover"
+                />
+                <p class="text-xs text-slate-400 mt-1">Preview actual. Subí una nueva imagen para reemplazar.</p>
+              </div>
+            )}
+            <input
+              type="file"
+              id="heroVideoPosterFile"
+              name="heroVideoPosterFile"
+              accept="image/*"
+              class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
+            />
+            <p class="text-xs text-slate-400 mt-1">Se mostrará antes de que el video empiece a reproducirse (recomendado para dispositivos móviles).</p>
           </div>
         </div>
 

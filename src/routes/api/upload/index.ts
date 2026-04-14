@@ -13,6 +13,7 @@ export const onPost: RequestHandler = async ({ request, json, env }) => {
         // In a more complex app, we should check admin session/cookies here.
         return {
           allowedContentTypes: ['video/mp4', 'video/webm', 'video/quicktime', 'image/jpeg', 'image/png', 'image/webp'],
+          maximumSizeInBytes: 150_000_000,
         };
       },
       onUploadCompleted: async ({ blob }) => {

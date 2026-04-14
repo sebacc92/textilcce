@@ -113,6 +113,7 @@ export default component$(() => {
               <video
                 controls
                 playsInline
+                poster={settings.value?.heroVideoPosterUrl || undefined}
                 class="absolute inset-0 w-full h-full object-cover"
               >
                 <source src={settings.value?.heroVideoUrl || "https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4"} type="video/mp4" />
