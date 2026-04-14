@@ -125,6 +125,9 @@ export default component$(() => {
   const settings = useSettingsLoader();
   const action = useUpdateSettingsAction();
   const isProcessing = useSignal(false);
+  const localHeroImage = useSignal<string | null>(null);
+  const localVideo = useSignal<string | null>(null);
+  const localPoster = useSignal<string | null>(null);
 
   const handleSubmit = $(async (_e: Event, currentTarget: HTMLFormElement) => {
     if (isProcessing.value || action.isRunning) return;
@@ -237,16 +240,18 @@ export default component$(() => {
 
           <div>
             <label for="heroImage" class="block text-sm font-medium text-slate-700 mb-1">Imagen de fondo</label>
-            {s.heroImageUrl && (
+            {(localHeroImage.value || s.heroImageUrl) && (
               <div class="mb-3">
                 <img
-                  src={s.heroImageUrl}
+                  src={localHeroImage.value || s.heroImageUrl!}
                   alt="Hero actual"
                   width={400}
                   height={200}
                   class="rounded-lg border border-slate-200 max-h-40 object-cover"
                 />
-                <p class="text-xs text-slate-400 mt-1">Imagen actual. Subí una nueva para reemplazar.</p>
+                <p class="text-xs text-slate-400 mt-1">
+                  {localHeroImage.value ? 'Vista previa de la imagen seleccionada.' : 'Imagen actual. Subí una nueva para reemplazar.'}
+                </p>
               </div>
             )}
             <input
@@ -255,20 +260,29 @@ export default component$(() => {
               name="heroImage"
               accept="image/*"
               class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
+              onChange$={(_, el) => {
+                const file = el.files?.[0];
+                if (file) localHeroImage.value = URL.createObjectURL(file);
+                else localHeroImage.value = null;
+              }}
             />
             <p class="text-xs text-slate-400 mt-1">Se optimizará automáticamente a .webp (1920px max). Recomendación: 1920×1080px.</p>
           </div>
 
           <div>
             <label for="heroVideoFile" class="block text-sm font-medium text-slate-700 mb-1">Video Vertical (Acerca De)</label>
-            {s.heroVideoUrl && (
+            {(localVideo.value || s.heroVideoUrl) && (
               <div class="mb-3">
                 <video
-                  src={s.heroVideoUrl}
+                  src={localVideo.value || s.heroVideoUrl!}
                   controls
+                  playsInline
+                  poster={localPoster.value || s.heroVideoPosterUrl || undefined}
                   class="rounded-lg border border-slate-200 max-h-40 object-cover"
                 />
-                <p class="text-xs text-slate-400 mt-1">Video actual. Subí uno nuevo para reemplazar.</p>
+                <p class="text-xs text-slate-400 mt-1">
+                  {localVideo.value ? 'Vista previa local del video.' : 'Video actual. Subí uno nuevo para reemplazar.'}
+                </p>
               </div>
             )}
             <input 
@@ -282,22 +296,29 @@ export default component$(() => {
               name="heroVideoFile"
               accept="video/*,.mov,.mp4"
               class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
+              onChange$={(_, el) => {
+                const file = el.files?.[0];
+                if (file) localVideo.value = URL.createObjectURL(file);
+                else localVideo.value = null;
+              }}
             />
             <p class="text-xs text-slate-400 mt-1">Podés subir videos pesados. Se guardará de forma segura en Vercel Blobs.</p>
           </div>
 
           <div>
             <label for="heroVideoPosterFile" class="block text-sm font-medium text-slate-700 mb-1">Imagen de Portada del Video (Preview)</label>
-            {s.heroVideoPosterUrl && (
+            {(localPoster.value || s.heroVideoPosterUrl) && (
               <div class="mb-3">
                 <img
-                  src={s.heroVideoPosterUrl}
+                  src={localPoster.value || s.heroVideoPosterUrl!}
                   alt="Poster actual"
                   width={400}
                   height={200}
                   class="rounded-lg border border-slate-200 max-h-40 object-cover"
                 />
-                <p class="text-xs text-slate-400 mt-1">Preview actual. Subí una nueva imagen para reemplazar.</p>
+                <p class="text-xs text-slate-400 mt-1">
+                  {localPoster.value ? 'Vista previa local de la portada.' : 'Preview actual. Subí una nueva imagen para reemplazar.'}
+                </p>
               </div>
             )}
             <input
@@ -306,6 +327,11 @@ export default component$(() => {
               name="heroVideoPosterFile"
               accept="image/*"
               class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
+              onChange$={(_, el) => {
+                const file = el.files?.[0];
+                if (file) localPoster.value = URL.createObjectURL(file);
+                else localPoster.value = null;
+              }}
             />
             <p class="text-xs text-slate-400 mt-1">Se mostrará antes de que el video empiece a reproducirse (recomendado para dispositivos móviles).</p>
           </div>
