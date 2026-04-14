@@ -67,7 +67,7 @@ export const SocialFeed = component$<SocialFeedProps>(({ posts }) => {
   const safePosts = posts && posts.length > 0 ? posts : MOCK_INSTAGRAM_POSTS;
 
   return (
-    <section class="relative py-20 bg-black text-white border-y border-white/10">
+    <section class="relative py-20 bg-gradient-to-b from-[var(--brand-dark)] to-[var(--brand-medium)] text-white border-y border-white/15">
 
       <div class="mx-auto flex max-w-7xl flex-col gap-10 px-4">
         <header class="flex flex-col items-center justify-between gap-6 md:flex-row">
@@ -90,8 +90,8 @@ export const SocialFeed = component$<SocialFeedProps>(({ posts }) => {
           </a>
         </header>
 
-        <div class="grid grid-cols-2 gap-1 md:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-6">
-          {safePosts.map((post) => (
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 mx-auto max-w-3xl w-full">
+          {safePosts.slice(0, 3).map((post) => (
             <a
               key={post.id}
               href={post.link}
