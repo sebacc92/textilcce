@@ -36,8 +36,8 @@ export const useInstagramFeed = routeLoader$(async (requestEvent) => {
     if (posts.length > 0) {
       return posts.map((p) => ({
         id: p.id,
-        imageUrl: p.mediaUrl,
-        link: p.permalink,
+        imageUrl: p.mediaUrl || '',
+        link: p.permalink || '',
         caption: p.caption || undefined,
       }));
     }
