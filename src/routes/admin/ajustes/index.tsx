@@ -4,6 +4,7 @@ import { getDb } from '../../../db/client';
 import { siteSettings } from '../../../db/schema';
 import { eq } from 'drizzle-orm';
 import { put } from '@vercel/blob';
+import { upload } from '@vercel/blob/client';
 import imageCompression from 'browser-image-compression';
 
 const DEFAULT_SETTINGS = {
@@ -107,12 +108,12 @@ export const useUpdateSettingsAction = routeAction$(
 export default component$(() => {
   const settings = useSettingsLoader();
   const action = useUpdateSettingsAction();
-  const isCompressing = useSignal(false);
+  const isProcessing = useSignal(false);
 
   const handleSubmit = $(async (_e: Event, currentTarget: HTMLFormElement) => {
-    if (isCompressing.value || action.isRunning) return;
+    if (isProcessing.value || action.isRunning) return;
 
-    isCompressing.value = true;
+    isProcessing.value = true;
     try {
       const formData = new FormData(currentTarget);
       const imageFile = formData.get('heroImage') as File | null;
@@ -131,11 +132,22 @@ export default component$(() => {
         formData.set('heroImage', compressedFile);
       }
 
+      const videoFile = formData.get('heroVideoFile') as File | null;
+      if (videoFile && videoFile.size > 0 && videoFile.name) {
+        const newFileName = `hero-video-${Date.now()}-${videoFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+        const blob = await upload(newFileName, videoFile, {
+          access: 'public',
+          handleUploadUrl: '/api/upload',
+        });
+        formData.set('heroVideoUrl', blob.url);
+        formData.delete('heroVideoFile');
+      }
+
       await action.submit(formData);
     } catch (error) {
-      console.error('Error al comprimir/subir imagen:', error);
+      console.error('Error al procesar archivos:', error);
     } finally {
-      isCompressing.value = false;
+      isProcessing.value = false;
     }
   });
 
@@ -217,16 +229,30 @@ export default component$(() => {
           </div>
 
           <div>
-            <label for="heroVideoUrl" class="block text-sm font-medium text-slate-700 mb-1">Video Vertical (Acerca De)</label>
-            <input
-              type="url"
-              id="heroVideoUrl"
-              name="heroVideoUrl"
-              value={s.heroVideoUrl || ''}
-              placeholder="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4"
-              class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+            <label for="heroVideoFile" class="block text-sm font-medium text-slate-700 mb-1">Video Vertical (Acerca De)</label>
+            {s.heroVideoUrl && (
+              <div class="mb-3">
+                <video
+                  src={s.heroVideoUrl}
+                  controls
+                  class="rounded-lg border border-slate-200 max-h-40 object-cover"
+                />
+                <p class="text-xs text-slate-400 mt-1">Video actual. Subí uno nuevo para reemplazar.</p>
+              </div>
+            )}
+            <input 
+              type="hidden" 
+              name="heroVideoUrl" 
+              value={s.heroVideoUrl || ''} 
             />
-            <p class="text-xs text-slate-400 mt-1">URL directa al video MP4 (ej. guardado en Vercel Blobs).</p>
+            <input
+              type="file"
+              id="heroVideoFile"
+              name="heroVideoFile"
+              accept="video/*"
+              class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
+            />
+            <p class="text-xs text-slate-400 mt-1">Podés subir videos pesados. Se guardará de forma segura en Vercel Blobs.</p>
           </div>
         </div>
 
@@ -425,16 +451,16 @@ export default component$(() => {
         <div class="flex justify-end">
           <button
             type="submit"
-            disabled={isCompressing.value || action.isRunning}
+            disabled={isProcessing.value || action.isRunning}
             class="bg-slate-900 text-white px-8 py-3 rounded-lg font-medium hover:bg-slate-800 transition shadow-sm inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isCompressing.value || action.isRunning ? (
+            {isProcessing.value || action.isRunning ? (
               <>
                 <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                {isCompressing.value ? 'Optimizando imagen...' : 'Guardando...'}
+                {isProcessing.value ? 'Procesando archivos...' : 'Guardando...'}
               </>
             ) : (
               'Guardar Cambios'

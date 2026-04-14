@@ -71,7 +71,7 @@ export default component$(() => {
                 rel="noopener noreferrer"
                 class="inline-flex w-full items-center justify-center rounded-lg bg-[#6272b3] px-6 py-3.5 font-semibold text-white transition-all hover:bg-white hover:text-[#1e2c53] focus:outline-none focus:ring-2 focus:ring-[#6272b3] focus:ring-offset-2 focus:ring-offset-[#1e2c53]"
               >
-                Solicitar Lista de Precios
+                Consultar ahora
               </a>
             </div>
           </div>
