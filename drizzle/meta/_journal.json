@@ -8,6 +8,13 @@
       "when": 1774530254949,
       "tag": "0000_majestic_tarot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1776181494431,
+      "tag": "0001_quick_carlie_cooper",
+      "breakpoints": true
     }
   ]
 }

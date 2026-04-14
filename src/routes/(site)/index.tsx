@@ -89,7 +89,7 @@ export default component$(() => {
                 playsInline
                 class="absolute inset-0 w-full h-full object-cover"
               >
-                <source src="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4" type="video/mp4" />
+                <source src={settings.value?.heroVideoUrl || "https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4"} type="video/mp4" />
               </video>
             </div>
           </div>

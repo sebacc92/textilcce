@@ -22,6 +22,9 @@ const DEFAULT_SETTINGS = {
   aiTone: '',
   aiKnowledge: '',
   aiCallToAction: '',
+  catalogTitle: 'Catálogo de Telas',
+  catalogDescription: 'En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.\n\nNuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.',
+  heroVideoUrl: 'https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4',
   updatedAt: null,
 };
 
@@ -62,6 +65,9 @@ export const useUpdateSettingsAction = routeAction$(
         aiTone: data.aiTone || null,
         aiKnowledge: data.aiKnowledge || null,
         aiCallToAction: data.aiCallToAction || null,
+        catalogTitle: data.catalogTitle || 'Catálogo de Telas',
+        catalogDescription: data.catalogDescription || null,
+        heroVideoUrl: data.heroVideoUrl || null,
         updatedAt: new Date(),
       };
 
@@ -92,6 +98,9 @@ export const useUpdateSettingsAction = routeAction$(
     aiTone: z.string().optional(),
     aiKnowledge: z.string().optional(),
     aiCallToAction: z.string().optional(),
+    catalogTitle: z.string().optional(),
+    catalogDescription: z.string().optional(),
+    heroVideoUrl: z.string().optional(),
   }),
 );
 
@@ -205,6 +214,50 @@ export default component$(() => {
               class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 transition"
             />
             <p class="text-xs text-slate-400 mt-1">Se optimizará automáticamente a .webp (1920px max). Recomendación: 1920×1080px.</p>
+          </div>
+
+          <div>
+            <label for="heroVideoUrl" class="block text-sm font-medium text-slate-700 mb-1">Video Vertical (Acerca De)</label>
+            <input
+              type="url"
+              id="heroVideoUrl"
+              name="heroVideoUrl"
+              value={s.heroVideoUrl || ''}
+              placeholder="https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4"
+              class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+            />
+            <p class="text-xs text-slate-400 mt-1">URL directa al video MP4 (ej. guardado en Vercel Blobs).</p>
+          </div>
+        </div>
+
+        {/* Catalog Section */}
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
+          <div class="border-b border-slate-100 pb-3">
+            <h2 class="text-lg font-semibold text-slate-800">🛍️ Catálogo</h2>
+            <p class="text-sm text-slate-500 mt-1">Configuración de la página del catálogo.</p>
+          </div>
+
+          <div>
+            <label for="catalogTitle" class="block text-sm font-medium text-slate-700 mb-1">Título del Catálogo</label>
+            <input
+              type="text"
+              id="catalogTitle"
+              name="catalogTitle"
+              value={s.catalogTitle || ''}
+              required
+              class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+            />
+          </div>
+
+          <div>
+            <label for="catalogDescription" class="block text-sm font-medium text-slate-700 mb-1">Descripción del Catálogo</label>
+            <textarea
+              id="catalogDescription"
+              name="catalogDescription"
+              rows={4}
+              class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition"
+            >{s.catalogDescription || ''}</textarea>
+            <p class="text-xs text-slate-400 mt-1">Podés usar saltos de línea para separar párrafos.</p>
           </div>
         </div>
 

@@ -91,6 +91,9 @@ export const siteSettings = sqliteTable('site_settings', {
   ctaSubtitle: text('cta_subtitle').default('Nuestro equipo está listo para asesorarte. Escribinos por WhatsApp y recibí atención personalizada al instante.'),
   ctaButtonText: text('cta_button_text').default('Escribinos por WhatsApp'),
   ctaImageUrl: text('cta_image_url'),
+  catalogTitle: text('catalog_title').notNull().default('Catálogo de Telas'),
+  catalogDescription: text('catalog_description').default('En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.\n\nNuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.'),
+  heroVideoUrl: text('hero_video_url').default('https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4'),
   updatedAt: integer('updated_at', { mode: 'timestamp' }),
 });
 

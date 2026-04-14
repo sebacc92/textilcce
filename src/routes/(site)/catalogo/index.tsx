@@ -60,19 +60,23 @@ export const ColorsList = component$((props: { colores: string[] }) => {
   );
 });
 
+import { useSiteSettingsLoader } from "../layout";
+
 export default component$(() => {
   const catalog = useCatalogLoader();
+  const settings = useSiteSettingsLoader();
 
   return (
     <div class="py-12 md:py-20">
       <div class="container mx-auto px-6 md:px-12">
         <header class="mb-12 text-center">
           <h1 class="font-heading text-4xl font-bold tracking-tight text-[#1e2c53] sm:text-5xl">
-            Catálogo de Telas
+            {settings.value.catalogTitle}
           </h1>
           <div class="mx-auto mt-6 max-w-3xl text-center text-gray-600 leading-relaxed">
-            <p>En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.</p>
-            <p class="mt-4">Nuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.</p>
+            {settings.value.catalogDescription?.split('\n').map((paragraph, index) => (
+              paragraph.trim() ? <p key={index} class={index > 0 ? "mt-4" : ""}>{paragraph}</p> : null
+            ))}
           </div>
         </header>
 

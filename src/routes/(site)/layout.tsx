@@ -36,6 +36,9 @@ export const useSiteSettingsLoader = routeLoader$(async ({ env }) => {
     businessHours: 'Lunes a Viernes: 9 a 17 hs',
     contactEmail: null,
     aiEnabled: true,
+    catalogTitle: 'Catálogo de Telas',
+    catalogDescription: 'En Textil CCE ofrecemos un amplio catálogo de telas por rollo en colores clásicos para producción continua, pensadas para cubrir las necesidades de fábricas de indumentaria, talleres y confeccionistas del rubro textil.\n\nNuestro objetivo es brindar stock permanente, calidad y disponibilidad para que cada cliente pueda desarrollar su moldería con materiales confiables.',
+    heroVideoUrl: 'https://sap3cnfy0vc6nzdk.public.blob.vercel-storage.com/output.mp4',
     updatedAt: null,
   };
 });
