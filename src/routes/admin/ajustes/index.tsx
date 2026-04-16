@@ -74,8 +74,6 @@ export const useUpdateSettingsAction = routeAction$(
         address: data.address || null,
         businessHours: data.businessHours || null,
         contactEmail: data.contactEmail || null,
-        businessHours: data.businessHours || null,
-        contactEmail: data.contactEmail || null,
         catalogTitle: data.catalogTitle || 'Catálogo de Telas',
         catalogDescription: data.catalogDescription || null,
         heroVideoUrl: data.heroVideoUrl || null,
@@ -279,10 +277,10 @@ export default component$(() => {
                 </p>
               </div>
             )}
-            <input 
-              type="hidden" 
-              name="heroVideoUrl" 
-              value={s.heroVideoUrl || ''} 
+            <input
+              type="hidden"
+              name="heroVideoUrl"
+              value={s.heroVideoUrl || ''}
             />
             <input
               type="file"
