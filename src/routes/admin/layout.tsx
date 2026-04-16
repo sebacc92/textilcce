@@ -31,6 +31,7 @@ export default component$(() => {
     { label: 'Marcas', href: '/admin/marcas/' },
     { label: 'Ajustes', href: '/admin/ajustes/' },
     { label: 'Usuarios', href: '/admin/usuarios/' },
+    { label: 'Configuración IA', href: '/admin/ia/' },
     { label: 'Chats de IA', href: '/admin/chats/' },
   ];
 

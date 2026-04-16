@@ -49,6 +49,7 @@ export const useCreateProductAction = routeAction$(
         sublimar: data.sublimar === 'on' || data.sublimar === true,
         estampar: data.estampar === 'on' || data.estampar === true,
         bordar: data.bordar === 'on' || data.bordar === true,
+        isOffer: data.isOffer === 'on' || data.isOffer === true,
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -76,6 +77,7 @@ export const useCreateProductAction = routeAction$(
     sublimar: z.union([z.string(), z.boolean()]).optional(),
     estampar: z.union([z.string(), z.boolean()]).optional(),
     bordar: z.union([z.string(), z.boolean()]).optional(),
+    isOffer: z.union([z.string(), z.boolean()]).optional(),
   }),
 );
 
@@ -174,6 +176,11 @@ export default component$(() => {
                   <input type="checkbox" name="bordar" class="sr-only peer" />
                   <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
                   <span class="ml-2 text-sm font-medium text-slate-700">Bordar</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" name="isOffer" class="sr-only peer" />
+                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-500"></div>
+                  <span class="ml-2 text-sm font-medium text-slate-700">Oferta Especial</span>
                 </label>
               </div>
             </div>

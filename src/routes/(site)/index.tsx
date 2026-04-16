@@ -25,6 +25,49 @@ export const useBrandsLoader = routeLoader$(async ({ env }) => {
   return await db.select().from(brands).where(eq(brands.isActive, true)).orderBy(brands.display_order);
 });
 
+export const useShowcaseProductsLoader = routeLoader$(async ({ env }) => {
+  const db = getDb(env);
+  
+  // Buscar categorías especiales por slug
+  const specialCats = await db.query.categories.findMany({
+    where: (cats, { or, eq, like }) => or(
+      eq(cats.slug, 'destacados'),
+      like(cats.slug, '%destacado%'),
+      eq(cats.slug, 'mundial'),
+      like(cats.slug, '%mundial%')
+    )
+  });
+
+  const featuredCatIds = specialCats.filter(c => c.slug.includes('destacado')).map(c => c.id);
+  const mundialCatIds = specialCats.filter(c => c.slug.includes('mundial')).map(c => c.id);
+
+  // Obtener productos de estas categorías con sus datos de categoría
+  const rows = await db.query.products.findMany({
+    where: (products, { eq }) => eq(products.isActive, true),
+    with: {
+      category: true
+    }
+  });
+
+  return {
+    offers: rows.filter((p) => p.isOffer).map(p => ({
+      id: p.id, name: p.name, description: p.description, 
+      imageUrl: p.imageUrl, colores: p.colores || [], fabricante: p.fabricante,
+      categoryName: p.category.name
+    })),
+    featured: rows.filter((p) => featuredCatIds.includes(p.categoryId)).map(p => ({
+      id: p.id, name: p.name, description: p.description, 
+      imageUrl: p.imageUrl, colores: p.colores || [], fabricante: p.fabricante,
+      categoryName: p.category.name
+    })),
+    mundial: rows.filter((p) => mundialCatIds.includes(p.categoryId)).map(p => ({
+      id: p.id, name: p.name, description: p.description, 
+      imageUrl: p.imageUrl, colores: p.colores || [], fabricante: p.fabricante,
+      categoryName: p.category.name
+    })),
+  };
+});
+
 export const useInstagramFeed = routeLoader$(async (requestEvent) => {
   const db = getDb(requestEvent.env);
   try {
@@ -52,6 +95,7 @@ import Horiz1 from "~/media/horizontales/1.jpeg?jsx"
 import Horiz2 from "~/media/horizontales/2.jpeg?jsx"
 import Horiz3 from "~/media/horizontales/3.jpeg?jsx"
 import SquareImg from "~/media/square/1.jpeg?jsx"
+import { OffersSection, FeaturedSection, MundialBanner } from "~/components/home/product-showcase";
 
 export default component$(() => {
   const settings = useSiteSettingsLoader();
@@ -59,6 +103,7 @@ export default component$(() => {
   const cats = useCategoriesLoader();
   const brandsList = useBrandsLoader();
   const instagramFeed = useInstagramFeed();
+  const showcaseProducts = useShowcaseProductsLoader();
 
   return (
     <>
@@ -158,6 +203,11 @@ export default component$(() => {
           </div>
         </div>
       </section>
+
+      {/* Shows Offers, Featured and Mundial Banner */}
+      <OffersSection products={showcaseProducts.value.offers} />
+      <FeaturedSection products={showcaseProducts.value.featured} />
+      <MundialBanner products={showcaseProducts.value.mundial} />
 
       {/* Featured Categories */}
       <section class="py-20">

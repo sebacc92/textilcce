@@ -61,6 +61,7 @@ export const ColorsList = component$((props: { colores: string[] }) => {
 });
 
 import { useSiteSettingsLoader } from "../layout";
+import { ShareButton } from "~/components/ui/share-button";
 
 export default component$(() => {
   const catalog = useCatalogLoader();
@@ -128,30 +129,42 @@ export default component$(() => {
                       class="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
                     >
                       {/* Product Image */}
-                      <div class="aspect-square w-full overflow-hidden bg-gray-100">
+                      <div class="relative aspect-square w-full overflow-hidden bg-gray-100">
+                        {/* Badges */}
+                        <div class="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+                          {product.isOffer && (
+                            <span class="bg-orange-500 text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm w-fit">
+                              Oferta
+                            </span>
+                          )}
+                        </div>
                         {product.imageUrl ? (
-                          <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            width={400}
-                            height={400}
-                            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            loading="lazy"
-                          />
+                          <a href={`/producto/${product.id}/`} class="block w-full h-full">
+                            <img
+                              src={product.imageUrl}
+                              alt={product.name}
+                              width={400}
+                              height={400}
+                              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              loading="lazy"
+                            />
+                          </a>
                         ) : (
-                          <div class="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <a href={`/producto/${product.id}/`} class="flex h-full w-full items-center justify-center text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                          </div>
+                          </a>
                         )}
                       </div>
 
                       {/* Product Info */}
                       <div class="p-5">
-                        <h3 class="font-heading text-lg font-bold text-[#1e2c53]">
-                          {product.name}
-                        </h3>
+                        <a href={`/producto/${product.id}/`} class="block">
+                          <h3 class="font-heading text-lg font-bold text-gray-900 line-clamp-1 hover:text-indigo-600 transition-colors">
+                            {product.name}
+                          </h3>
+                        </a>
                         {product.description && (
                           <p class="mt-1.5 text-sm text-gray-500 line-clamp-2">
                             {product.description}
@@ -194,6 +207,7 @@ export default component$(() => {
                           </svg>
                           Consultar
                         </a>
+                        <ShareButton product={{ id: product.id, name: product.name }} />
                       </div>
                     </div>
                   ))}
