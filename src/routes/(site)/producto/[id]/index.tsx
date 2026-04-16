@@ -47,7 +47,7 @@ export default component$(() => {
   const product = productLoader.value;
   const settings = useSiteSettingsLoader();
 
-  const phone = settings.value?.whatsapp || "5491144048614";
+  const phone = settings.value?.whatsappNumber || "5491144048614";
   const consultMessage = `Hola, me interesa obtener información sobre el producto: ${product.name} (Catalogado en ${product.categoryName || 'Telas'})`;
 
   return (
