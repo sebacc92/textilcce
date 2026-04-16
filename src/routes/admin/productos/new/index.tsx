@@ -158,8 +158,17 @@ export default component$(() => {
               <p class="mt-1 text-xs text-slate-400">Separe los colores con una coma (,). Esto creará un botón por cada color.</p>
             </div>
 
+            {/* Oferta Especial */}
+            <div class="sm:col-span-2 py-4 border-t border-slate-100 mt-2">
+              <label class="relative inline-flex items-center cursor-pointer group">
+                <input type="checkbox" name="isOffer" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+                <span class="ml-3 text-sm font-bold text-slate-700 group-hover:text-orange-600 transition-colors">Marcar como Oferta Especial (Home)</span>
+              </label>
+            </div>
+
             {/* Nuevos Campos (Procesos) */}
-            <div class="sm:col-span-2 space-y-3 mt-4 border-t pt-4 border-slate-200">
+            <div class="sm:col-span-2 space-y-3 mt-2 border-t pt-4 border-slate-200">
               <h3 class="text-sm font-semibold text-slate-800">Procesos Soportados</h3>
               <div class="flex gap-6">
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -176,11 +185,6 @@ export default component$(() => {
                   <input type="checkbox" name="bordar" class="sr-only peer" />
                   <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
                   <span class="ml-2 text-sm font-medium text-slate-700">Bordar</span>
-                </label>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" name="isOffer" class="sr-only peer" />
-                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-500"></div>
-                  <span class="ml-2 text-sm font-medium text-slate-700">Oferta Especial</span>
                 </label>
               </div>
             </div>
